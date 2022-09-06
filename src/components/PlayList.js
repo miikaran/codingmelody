@@ -1,8 +1,9 @@
 import React from 'react';
 import { useState } from 'react'
 import validator from 'validator'
+import MusicPlayer from './MusicPlayer';
 
-export default function PlayList() {
+export default function PlayList(props) {
 
 
     const [urlInput, setUrlInput] = useState('');
@@ -17,9 +18,11 @@ export default function PlayList() {
         setUrlInput(event.target.value);
     };
 
+
     const handleNameInputChange = event => {
         setNameInput(event.target.value);
     };
+
     
     const handleSubmit = event => {
 
@@ -67,17 +70,22 @@ export default function PlayList() {
             }, 2000)            
         }
         else{
-            return 0;
+            return null;
         }
+    }
+
+
+    const sendSongUrlToParent = (url) => {
+        props.url(url);
     }
 
 
     const displayError = () => {
 
-        setError('Input Not Valid')
+        setError('Input Not Valid. Make sure to add song name and proper URL')
         setTimeout(() =>{
             setError(null)
-        }, 2000)
+        }, 3000)
     }
 
 
@@ -92,15 +100,13 @@ export default function PlayList() {
                         ADD TO PLAYLIST            
                     </button>
                     <br />
-
+    
                     <span className="text-red-400 mx-1 font-bold">{error}</span>
 
                     {itemAdded ? (
-
                         <div>
                             <p className="text-green-300 font-bold mx-1">{successfull}</p>
                         </div>
-
                     ): null}
 
                 </form>
@@ -108,7 +114,9 @@ export default function PlayList() {
                 {items.map(({text, text2}, index) => (
         
                 <div className="mt-8 flex" key={index}>
+                    
                     <button onClick={() => removeItem(index)} className="bg-red-500 mx-2 px-3">REMOVE</button>
+                    <button onClick={() => sendSongUrlToParent(text)} className="bg-green-500 mx-2 px-3">PLAY</button>
                     <ul className="text-xl" key={index}>
                         <li className="flex gap-2"><span className="font-bold">SONG NAME:</span>{text2}</li>
                         <li className="flex gap-2"><span className="font-bold">SONG URL:</span>{text}</li>
