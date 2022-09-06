@@ -1,11 +1,11 @@
-import Player from '../components/Player'
+import MusicPlayer from '../components/MusicPlayer'
 
 function App() {
 
   return (
 
     <>
-    <Player />
+    <MusicPlayer />
     </>
   
   );
