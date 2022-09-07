@@ -11,7 +11,8 @@ export default function Login(){
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-
+    /*PREVENT USER FROM LOGGIN
+     OUT IF REFRESHING ETC*/
     useEffect(() =>{
         auth.onAuthStateChanged((user) => {
             if(user){
@@ -30,6 +31,8 @@ export default function Login(){
 
     const handleSignIn = () => {
 
+        /*REDIRECT USER TO 
+        MAINPAGE IF LOGGED IN*/
         signInWithEmailAndPassword(auth, email, password)
         .then(() => {
             navigate('/MainPage')
