@@ -39,9 +39,9 @@ export default function MusicPlayer(props){
     }
 
 
-    const PlayListMusic = (val) =>{
+    const PlayListMusic = (url) =>{
 
-        setUrl(val)
+        setUrl(url)
         setControls(true);
         setPlaying(true);
         setPlayList(true);
