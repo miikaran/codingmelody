@@ -1,7 +1,9 @@
 import React from 'react';
 import { useState } from 'react'
 import validator from 'validator'
-import MusicPlayer from './MusicPlayer';
+import { uid } from 'uid'
+import { set, ref } from 'firebase/database'
+import { auth, db } from '../firebase/firebase'
 
 export default function PlayList(props) {
 
@@ -29,13 +31,14 @@ export default function PlayList(props) {
         event.preventDefault();
 
         if (!urlInput || !validator.isURL(urlInput) || !nameInput){   
-            displayError();
+            displayErrorOnAdding();
         }
         else{
             itemAddedSuccesfully();
             addItem(urlInput, nameInput);
             setUrlInput('');
             setNameInput('');
+            writeToFireBase();
         }
     };
 
@@ -74,18 +77,28 @@ export default function PlayList(props) {
         }
     }
 
-
-    const sendSongUrlToParent = (url) => {
+    const passSongUrlToParent = (url) => {
         props.url(url);
     }
 
 
-    const displayError = () => {
+    const displayErrorOnAdding = () => {
 
         setError('Input Not Valid. Make sure to add song name and proper URL')
         setTimeout(() =>{
             setError(null)
         }, 3000)
+    }
+
+
+    /*WRITE PLAYLIST ITEMS TO 
+     FIREBASE CURRENT USER*/
+     const writeToFireBase = () => {
+        const userId = uid();
+        set(ref(db, `${auth.currentUser.uid}/${userId}`), {
+            PlaylistItem: urlInput, nameInput,
+            userId: userId,
+        })
     }
 
 
@@ -116,7 +129,7 @@ export default function PlayList(props) {
                 <div className="mt-8 flex" key={index}>
                     
                     <button onClick={() => removeItem(index)} className="bg-red-500 mx-2 px-3">REMOVE</button>
-                    <button onClick={() => sendSongUrlToParent(text)} className="bg-green-500 mx-2 px-3">PLAY</button>
+                    <button onClick={() => passSongUrlToParent(text)} className="bg-green-500 mx-2 px-3">PLAY</button>
                     <ul className="text-xl" key={index}>
                         <li className="flex gap-2"><span className="font-bold">SONG NAME:</span>{text2}</li>
                         <li className="flex gap-2"><span className="font-bold">SONG URL:</span>{text}</li>

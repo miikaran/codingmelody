@@ -3,7 +3,6 @@ import ReactPlayer from 'react-player/lazy'
 import { useState } from 'react'
 import PlayList from './PlayList'
 
-
 export default function MusicPlayer(props){
 
 

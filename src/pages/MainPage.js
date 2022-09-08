@@ -13,13 +13,14 @@ export default function MainPage(){
    /*PREVENT USER FROM NAVIGATING TO
     MAINPAGE WITHOUT BEING LOGGED IN*/
     useEffect(() =>{
-        auth.onAuthStateChanged(user =>{
+        auth.onAuthStateChanged((user) =>{
             if(!user){
                 navigate('/')
             }
         })
     }, [])
 
+    
     return(
 
         <div>
