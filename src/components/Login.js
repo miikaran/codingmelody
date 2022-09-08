@@ -31,8 +31,8 @@ export default function Login(){
 
     const handleSignIn = () => {
 
-        /*REDIRECT USER TO 
-        MAINPAGE IF LOGGED IN*/
+        /*SIGN IN & REDIRECT USER TO 
+        MAINPAGE IF CORRECT CREDENTIALS*/
         signInWithEmailAndPassword(auth, email, password)
         .then(() => {
             navigate('/MainPage')
