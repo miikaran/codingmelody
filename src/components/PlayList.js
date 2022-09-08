@@ -26,7 +26,7 @@ export default function PlayList(props) {
     };
 
     
-    const handleSubmit = event => {
+    const handleSubmit = event => { 
 
         event.preventDefault();
 
@@ -66,7 +66,6 @@ export default function PlayList(props) {
     const itemAddedSuccesfully = () => {
 
         if(itemAdded){
-
             setSuccessfull('Item Added To Playlist')     
             setTimeout(() =>{
                 setSuccessfull(null)
@@ -94,6 +93,7 @@ export default function PlayList(props) {
     /*WRITE PLAYLIST ITEMS TO 
      FIREBASE CURRENT USER*/
      const writeToFireBase = () => {
+        
         const userId = uid();
         set(ref(db, `${auth.currentUser.uid}/${userId}`), {
             PlaylistItem: urlInput, nameInput,
