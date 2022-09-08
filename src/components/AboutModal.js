@@ -10,7 +10,7 @@ export default function AboutModal(){
             Lorem Ipsum has been the industry's standard dummy text. 
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
             Lorem Ipsum has been the industry's standard dummy text.
-            <br /><span className="text-xl font-medium">Click About to read more😊</span>
+            <br /><span className="text-xl font-medium">Click to read more😊</span>
         </div>
     )
 }

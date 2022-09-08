@@ -7,15 +7,24 @@
 
 
 body {
-  background-color: rgb(240, 251, 255);
+  background: #000014; 
+  background: -webkit-linear-gradient(to right, rgb(0, 13, 34), #163f66);
+  background: linear-gradient(to right, rgb(0, 13, 34), #163f66);
+
   margin: 0;
 }
 
 .welcome{
-  background-image: url('./assets/Welcome_waves.svg');
+  background-image: url('./assets/Untitled (1).svg');
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: 0vw 24vh;
+  background-position: 0vw 28vh;
+}
+
+@media (max-width: 1600px){
+  .welcome{
+    background-position: 0vw 50vh;
+  }
 }
 
 .aboutmodal{

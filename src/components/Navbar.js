@@ -3,6 +3,7 @@ import { useState } from "react";
 import { BiLogInCircle } from 'react-icons/bi'
 import { RiContactsFill } from 'react-icons/ri'
 import  AboutModal from './AboutModal'
+import Logo from '../assets/Untitled (2).svg'
 
 
 export default function Navbar(){
@@ -15,13 +16,13 @@ export default function Navbar(){
         <nav className="w-full">
         <div className="justify-between px-4 mx-auto lg:max-w-8xl lg:items-center lg:flex lg:px-28">
             <div>
-                <div className="flex items-center justify-between py-3 lg:py-10 lg:block">
-                    <a className="text-gray-700 block font-bold text-2xl" href="/">
-                        CodingMelody
+                <div className="flex items-center justify-between py-3 lg:py-6 lg:block">
+                    <a className="block mb-5" href="/">
+                        <img className="w-48" src={Logo} />
                     </a>
                     <div className="lg:hidden">
                         <button
-                            className="p-2 text-gray-800 rounded-md outline-none focus:border-gray-400 focus:border"
+                            className="p-2 text-gray-200 rounded-md outline-none focus:border-gray-400 focus:border"
                             onClick={() => setNavbar(!navbar)}
                         >
                             {navbar ? (
@@ -40,7 +41,7 @@ export default function Navbar(){
                             ) : (
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className="w-6 h-6"
+                                    className="w-10 h-10"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
@@ -64,10 +65,10 @@ export default function Navbar(){
                         navbar ? "block" : "hidden"
                     }`}
                 >
-                    <ul className="items-center text-gray-600 font-bold tracking-tighter justify-center text-xl space-y-6 lg:flex lg:space-x-20 lg:space-y-0">                           
+                    <ul className="items-center text-gray-100 font-bold tracking-tighter justify-center text-xl space-y-6 lg:flex lg:space-x-20 lg:space-y-0">                           
                     
                     <li>
-                    <a href="/" onMouseEnter={() => setShowAbout(true)} onMouseLeave={() => setShowAbout(false)} className="hover:text-gray-700">
+                    <a href="/" onMouseEnter={() => setShowAbout(true)} onMouseLeave={() => setShowAbout(false)} className="hover:text-gray-300">
                         ABOUT
                     </a>  
 
@@ -80,7 +81,7 @@ export default function Navbar(){
                     </li>
 
                     <li>
-                    <a href="/" className="hover:text-gray-700" >
+                    <a href="/" className="hover:text-gray-300" >
                         GET IN TOUCH
                     </a>
                     </li>    
