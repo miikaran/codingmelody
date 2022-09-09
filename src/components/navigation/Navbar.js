@@ -2,8 +2,9 @@ import React from 'react';
 import { useState } from "react";
 import { BiLogInCircle } from 'react-icons/bi'
 import { RiContactsFill } from 'react-icons/ri'
-import  AboutModal from './AboutModal'
-import Logo from '../assets/Untitled (2).svg'
+import  AboutModal from '../AboutModal'
+import Logo from '../../assets/Untitled (2).svg'
+import { Link } from 'react-router-dom';
 
 
 export default function Navbar(){
@@ -11,15 +12,14 @@ export default function Navbar(){
     const [navbar, setNavbar] = useState(false);
     const [showAbout, setShowAbout] = useState(false);
 
-
     return(
         <nav className="w-full">
         <div className="justify-between px-4 mx-auto lg:max-w-8xl lg:items-center lg:flex lg:px-28">
             <div>
                 <div className="flex items-center justify-between py-3 lg:py-6 lg:block">
-                    <a className="block mb-5" href="/">
+                    <Link className="block mb-5" to="/">
                         <img className="w-48" src={Logo} />
-                    </a>
+                    </Link>
                     <div className="lg:hidden">
                         <button
                             className="p-2 text-gray-200 rounded-md outline-none focus:border-gray-400 focus:border"
@@ -68,9 +68,9 @@ export default function Navbar(){
                     <ul className="items-center text-gray-100 font-bold tracking-tighter justify-center text-xl space-y-6 lg:flex lg:space-x-20 lg:space-y-0">                           
                     
                     <li>
-                    <a href="/" onMouseEnter={() => setShowAbout(true)} onMouseLeave={() => setShowAbout(false)} className="hover:text-gray-300">
+                    <Link to="/" onMouseEnter={() => setShowAbout(true)} onMouseLeave={() => setShowAbout(false)} className="hover:text-gray-300">
                         ABOUT
-                    </a>  
+                    </Link>  
 
                     { showAbout ? (
 
@@ -81,22 +81,22 @@ export default function Navbar(){
                     </li>
 
                     <li>
-                    <a href="/" className="hover:text-gray-300" >
+                    <Link to="/" className="hover:text-gray-300" >
                         GET IN TOUCH
-                    </a>
+                    </Link>
                     </li>    
 
                     <div className="flex space-x-8">
                         <li>
-                        <a href="/Login" className="text-xl font-bold text-white flex rounded-full bg-rose-400 py-3 px-8 hover:bg-rose-500 transition duration-200">
+                        <Link to="/Login" className="text-xl font-bold text-white flex rounded-full bg-rose-400 py-3 px-8 hover:bg-rose-500 transition duration-200">
                             LOG IN <BiLogInCircle className="mt-1 text-2xl mx-1" />
-                        </a>
+                        </Link>
                         </li>
 
                         <li>
-                        <a href="/Signup" className="text-xl flex rounded-full text-white bg-indigo-400 py-3 px-8 hover:bg-indigo-500 transition duration-200">
+                        <Link to="/Signup" className="text-xl flex rounded-full text-white bg-indigo-400 py-3 px-8 hover:bg-indigo-500 transition duration-200">
                             SIGN UP <RiContactsFill className="text-xl mx-2" style={{marginTop: '5px'}} />
-                        </a>
+                        </Link>
                         </li>  
                     </div>         
 

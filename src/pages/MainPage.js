@@ -1,6 +1,6 @@
 import React from 'react';
 import MusicPlayer from '../components/MusicPlayer'
-import Logout from '../components/Logout'
+import Logout from '../components/auth/Logout'
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'

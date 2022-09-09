@@ -10,7 +10,6 @@ body {
   background: #000014; 
   background: -webkit-linear-gradient(to right, rgb(0, 13, 34), #163f66);
   background: linear-gradient(to right, rgb(0, 13, 34), #163f66);
-
   margin: 0;
 }
 
@@ -18,12 +17,12 @@ body {
   background-image: url('./assets/Untitled (1).svg');
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: 0vw 28vh;
+  background-position: 0vw -1vh;
 }
 
 @media (max-width: 1600px){
   .welcome{
-    background-position: 0vw 50vh;
+    background-position: 0vw 20vh;
   }
 }
 
