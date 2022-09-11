@@ -3,29 +3,33 @@ import { useState, useEffect } from 'react'
 import validator from 'validator'
 import { uid } from 'uid'
 import { onAuthStateChanged } from 'firebase/auth'
-import { set, ref, get, onValue } from 'firebase/database'
+import { set, ref, onValue, remove } from 'firebase/database'
 import { auth, db } from '../firebase/firebase'
 
 export default function PlayList(props) {
 
-    const [urlInput, setUrlInput] = useState('');
-    const [nameInput, setNameInput] = useState('');
-    const [items, setItems] = useState([]);
+    const [url, setUrl] = useState('');
+    const [name, setName] = useState('');
     const [error, setError] = useState('');
+    const [items, setItems] = useState([]);
     const [itemAdded, setItemAdded] = useState(false);
     const [successfull, setSuccessfull] = useState('');
-    const [playListData, setPlayListData] = useState([]);
+    const [itemDeleted, setItemDeleted] = useState(false);
+    const [deleted, setDeleted] = useState('');
+    
 
-
+    /*READS USERS PLAYLIST
+    DATA FROM FIREBASE*/
     useEffect(() =>{
-        auth.onAuthStateChanged((user) => {
+        auth.onAuthStateChanged((user) => {         
             if(user){
+                //onValue listens for events & changes & updates them.
                 onValue(ref(db, `/${auth.currentUser.uid}`), snapshot => {
-                    setPlayListData([])
+                    setItems([])
                     const data = snapshot.val()
                     if(data !== null){
-                        Object.values(data).map(items => {
-                            setPlayListData((oldArray) =>  [...oldArray, items])
+                        Object.values(data).map((items) => {
+                            setItems((oldArray) => [...oldArray, items])
                         })
                     }
                 })
@@ -36,55 +40,37 @@ export default function PlayList(props) {
         })
     }, [])
 
+    
 
-    const handleUrlInputChange = event => {
-        setUrlInput(event.target.value);
+    const handleUrlInputChange = (event) => {
+        setUrl(event.target.value);
     };
 
 
-    const handleNameInputChange = event => {
-        setNameInput(event.target.value);
+    const handleNameInputChange = (event) => {
+        setName(event.target.value);
     };
+
 
     
-    const handleSubmit = event => { 
-
+    /*HANDLE ADDING
+    PLAYLIST ITEMS*/
+    const handleSubmit = (event) => { 
         event.preventDefault();
 
-        if (!urlInput || !validator.isURL(urlInput) || !nameInput){   
+        if (!url || !validator.isURL(url) || !name){   
             displayErrorOnAdding();
         }
         else{
-            itemAddedSuccesfully();
-            addItem(urlInput, nameInput);
-            setUrlInput('');
-            setNameInput('');
             writeToFireBase();
+            setUrl('');
+            setName('');
         }
     };
 
-  
-    const addItem = (text, text2) => {  
-
-        const newItems = [
-            { text, text2 }
-            , ...items
-        ];     
-        setItemAdded(true)
-        setItems(newItems);
-    };
 
 
-    const removeItem = (index) => {
-
-        const newItems = items.filter((items, itemIndex) =>{
-            return itemIndex !== index;
-        })
-        setItems(newItems);
-    };
-
-
-    const itemAddedSuccesfully = () => {
+    const itemAddedSuccessfully = () => {
 
         if(itemAdded){
             setSuccessfull('Item Added To Playlist')     
@@ -93,9 +79,24 @@ export default function PlayList(props) {
             }, 2000)            
         }
         else{
-            return null;
+            return null
         }
     }
+
+
+    const itemDeletedSuccessfully = () => {
+
+        if(itemDeleted){
+            setDeleted(`${name} Deleted Successfully From Playlist.`)     
+            setTimeout(() =>{
+                setDeleted(null)
+            }, 2000)            
+        }
+        else{
+            return null
+        }
+    }
+
 
     const passSongUrlToParent = (url) => {
         props.url(url);
@@ -112,14 +113,28 @@ export default function PlayList(props) {
 
 
     /*WRITE PLAYLIST ITEMS TO 
-     FIREBASE CURRENT USER*/
+    FIREBASE CURRENT USER*/
      const writeToFireBase = () => {
         
         const userId = uid();
         set(ref(db, `${auth.currentUser.uid}/${userId}`), {
-            PlaylistItem: urlInput, nameInput,
+            PlaylistItem: url, name,
             userId: userId,
         })
+        setItemAdded(true);
+        itemAddedSuccessfully();
+    }
+
+
+    /*DELETE PLAYLIST 
+    ITEMS FROM FIREBASE*/ 
+    const deleteFromFireBase = (uid) => {
+        remove(ref(db, `${auth.currentUser.uid}/${uid}`))
+        .catch((err) => {
+            alert(err.message)
+        })
+        setItemDeleted(true);
+        itemDeletedSuccessfully();
     }
 
 
@@ -128,8 +143,8 @@ export default function PlayList(props) {
         <div className="flex justify-center">
             <div className="block">
                 <form onSubmit={handleSubmit}>
-                    <input onChange={handleUrlInputChange} value={urlInput} type="text" className="mt-32 py-3 pl-3 pr-16 text-sm border-2 border-gray-200" placeholder="ENTER URL HERE"/>
-                    <input onChange={handleNameInputChange} value={nameInput} type="text" className="mt-32 py-3 pl-3 pr-16 text-sm border-2 border-gray-200" placeholder="SONG NAME"/>        
+                    <input onChange={handleNameInputChange} value={name} type="text" className="mt-32 py-3 pl-3 pr-16 text-sm border-2 border-gray-200" placeholder="SONG NAME"/>        
+                    <input onChange={handleUrlInputChange} value={url} type="text" className="mt-32 py-3 pl-3 pr-16 text-sm border-2 border-gray-200" placeholder="ENTER URL HERE"/>
                     <button type="submit" className="text-white font-bold bg-gray-600 mt-4 py-3 px-4" >
                         ADD TO PLAYLIST            
                     </button>
@@ -143,30 +158,25 @@ export default function PlayList(props) {
                         </div>
                     ): null}
 
+                    {itemDeleted ? (
+                        <div>
+                            <p className="text-red-500 font-bold mx-1">{deleted}</p>
+                        </div>
+                    ): null}
+                     
+
                 </form>
 
-                {playListData.map(items => (
 
-                <div className="mt-8 flex">
-
-                    <button onClick={() => removeItem()} className="bg-red-500 mx-2 px-3">REMOVE</button>
-                    <button onClick={() => passSongUrlToParent(items.PlaylistItem)} className="bg-green-500 mx-2 px-3">PLAY</button>
-                    <ul className="text-xl">
-                        <li className="flex gap-2"><span className="font-bold">SONG NAME:</span>{items.nameInput}</li>
-                        <li className="flex gap-2"><span className="font-bold">SONG URL:</span>{items.PlaylistItem}</li>
-                    </ul>
-                </div>
-                ))}
-
-                {items.map(({text, text2}, index) => (
+                {items.map(data => (
             
-                    <div className="mt-8 flex" key={index}>
+                    <div className="mt-8 flex">
                         
-                        <button onClick={() => removeItem(index)} className="bg-red-500 mx-2 px-3">REMOVE</button>
-                        <button onClick={() => passSongUrlToParent(text)} className="bg-green-500 mx-2 px-3">PLAY</button>
-                        <ul className="text-xl" key={index}>
-                            <li className="flex gap-2"><span className="font-bold">SONG NAME:</span>{text2}</li>
-                            <li className="flex gap-2"><span className="font-bold">SONG URL:</span>{text}</li>
+                        <button onClick={() => deleteFromFireBase(data.userId)} className="bg-red-500 mx-2 px-3">REMOVE</button>
+                        <button onClick={() => passSongUrlToParent(data.PlaylistItem)} className="bg-green-500 mx-2 px-3">PLAY</button>
+                        <ul className="text-xl">
+                            <li className="flex gap-2"><span className="font-bold">SONG NAME:</span>{data.name}</li>
+                            <li className="flex gap-2"><span className="font-bold">SONG URL:</span>{data.PlaylistItem}</li>
                         </ul>
                     </div>
                 ))}
