@@ -15,10 +15,10 @@ export default function Welcome(){
                     <span className="font-bold"> Basically Spotify, but FREE.</span></p>
         
                     <div className="flex gap-4">
-                        <Link to="/Signup" className="mt-3 text-xl tracking-tighter bg-rose-400 px-5 sm:px-7 text-white font-bold py-3 rounded-sm hover:tracking-tight hover:bg-rose-500 transition duration-200">
+                        <Link to="/Signup" className="mt-3 text-xl tracking-tighter bg-rose-400 px-5 sm:px-7 text-white font-bold py-3 rounded-sm hover:bg-rose-500 transition duration-200">
                             CREATE ACCOUNT
                         </Link>
-                        <Link to="/" className="flex mt-3 tracking-tighter text-xl bg-indigo-400 rounded-sm px-7 text-white py-3 font-bold hover:tracking-tight hover:bg-indigo-500 transition duration-200">
+                        <Link to="/" className="flex mt-3 tracking-tighter text-xl bg-indigo-400 rounded-sm px-7 text-white py-3 font-bold hover:bg-indigo-500 transition duration-200">
                         DEMO <AiOutlinePlayCircle className="mx-2 text-3xl"/>
                         </Link>
                     </div>

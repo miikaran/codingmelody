@@ -3,13 +3,16 @@ import { useState } from 'react'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/firebase.js'
 import { useNavigate } from 'react-router-dom'
+import Logo from '../../assets/Untitled (2).svg'
+import { Link } from 'react-router-dom'
+import SignupImg from '../../assets/Signup.svg'
+import { AiTwotoneMail } from 'react-icons/ai'
 
 export default function Signup(){
 
     const navigate = useNavigate();
     const [userCredentials, setUserCredentials] = useState({
         email: '',
-        checkEmail: '',
         password: '',
         checkPassword: ''
     });
@@ -18,16 +21,8 @@ export default function Signup(){
 
         /* ALERT IF INPUT FIELDS
           ARE NOT THE SAME */
-        if(userCredentials.email !== userCredentials.checkEmail && userCredentials.password !== userCredentials.checkPassword){
-            alert('Credentials are not the same.')
-            return
-        }
-        else if(userCredentials.email !== userCredentials.checkEmail){
-            alert('Emails are not the same.')
-            return
-        }
-        else if(userCredentials.password !== userCredentials.checkPassword){
-            alert('Passwords are not the same.')
+        if(userCredentials.password !== userCredentials.checkPassword){
+            alert('Passwords Are Not The Same.')
             return
         }
 
@@ -44,22 +39,21 @@ export default function Signup(){
 
     return(
 
-        <div className="flex justify-center py-60">
-            <div className="text-3xl mx-4 mt-6 font-bold"><h1>Signup page</h1></div>
-            <div className="bg-gray-500 p-5">
-                <div className="space-y-5">
-                    <div className="block space-x-4">
-                        <input onChange={(e) => setUserCredentials({...userCredentials, email: e.target.value})} value={userCredentials.email} placeholder="email here" type="email" />
-                        <input onChange={(e) => setUserCredentials({...userCredentials, checkEmail: e.target.value})} value={userCredentials.checkEmail} placeholder="double check email" type="email" />
+        <div className="flex justify-center mt-32 mr-32">
+            <img className="bg-sky-200 px-14 bg-opacity-80 max-w-md" src={SignupImg} alt="Signup" />          
+            <div className="bg-sky-200 bg-opacity-90 space-y-6 px-16 pb-10 pt-2">
+                <img className="max-w-sm mx-2" src={Logo} />
+                <div className="space-y-10">
+                    <div className="space-y-5 flex flex-col">
+                        <input className="py-3 px-4 rounded-sm" onChange={(e) => setUserCredentials({...userCredentials, email: e.target.value})} value={userCredentials.email} placeholder="Enter Your Email.." type="email" />                
+                        <input className="py-3 px-4 rounded-sm" onChange={(e) => setUserCredentials({...userCredentials, password: e.target.value})} value={userCredentials.password} placeholder="Enter Your Password.." type="password" />
+                        <input className="py-3 px-4 rounded-sm" onChange={(e) => setUserCredentials({...userCredentials, checkPassword: e.target.value})} value={userCredentials.checkPassword} placeholder="Confirm Your Password.." type="password" />
+                        <button onClick={handleSignUp} className="bg-indigo-500 rounded-sm font-bold p-2 text-2xl mx-4 text-white hover:bg-indigo-600 transition duration-200">CREATE ACCOUNT</button>
                     </div>
-                    <div className="block space-x-4">
-                        <input onChange={(e) => setUserCredentials({...userCredentials, password: e.target.value})} value={userCredentials.password} placeholder="password here" type="password" />
-                        <input onChange={(e) => setUserCredentials({...userCredentials, checkPassword: e.target.value})} value={userCredentials.checkPassword} placeholder="double check password" type="password" />
-                    </div>
-                    <div>
-                        <button onClick={handleSignUp} className="bg-gray-800 p-2 text-2xl mx-4 text-white">Signup</button>
-                        <a href="/Login" className="text-2xl text-white bg-gray-800 p-2">Already have account?</a> 
-                    </div>
+                </div>
+                
+                <div className="flex justify-center text-center">
+                    <span className="text-gray-700 font-bold">Already Have An Account? <br />Login Here <Link to="/Login" className="underline text-rose-500" href="">Here.</Link></span>
                 </div>
             </div>
         </div>

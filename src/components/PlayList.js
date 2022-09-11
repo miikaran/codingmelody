@@ -35,7 +35,7 @@ export default function PlayList(props) {
                 })
             }
             else{
-                return
+                return null
             }
         })
     }, [])
@@ -129,6 +129,7 @@ export default function PlayList(props) {
     /*DELETE PLAYLIST 
     ITEMS FROM FIREBASE*/ 
     const deleteFromFireBase = (uid) => {
+
         remove(ref(db, `${auth.currentUser.uid}/${uid}`))
         .catch((err) => {
             alert(err.message)
