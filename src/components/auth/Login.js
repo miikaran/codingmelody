@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/firebase.js'
 import { useNavigate } from 'react-router-dom'
 import Logo from '../../assets/Untitled (2).svg'
+import { Link } from 'react-router-dom';
 
 
 export default function Login(){
@@ -59,7 +60,7 @@ export default function Login(){
                     </div>
                     
                     <div className="flex justify-center text-center mt-4">
-                        <span className="text-gray-700 font-bold">No Account Yet? <br />Create New Account <a className="underline text-rose-500" href="">Here.</a></span>
+                        <span className="text-gray-700 font-bold">No Account Yet? <br />Create New Account <Link to="/Signup" className="underline text-rose-500" href="">Here.</Link></span>
                     </div>
                     
                 </div>

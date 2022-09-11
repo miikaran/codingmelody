@@ -3,7 +3,7 @@ import React from 'react';
 export default function Cards(){
 
     return(
-        <section className="flex justify-center bg-gray-200 pt-10 pb-52">
+        <section className="flex justify-center pt-10 pb-52 bg-gradient-to-br from-white via-blue-100 to-white">
             <div className="text-center pt-10">
                 <span className="text-4xl font-medium text-gray-700">Your favourite music is only few clicks away.</span>
                 <br />

@@ -1,12 +1,12 @@
 import React from 'react';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import validator from 'validator'
 import { uid } from 'uid'
-import { set, ref } from 'firebase/database'
+import { onAuthStateChanged } from 'firebase/auth'
+import { set, ref, get, onValue } from 'firebase/database'
 import { auth, db } from '../firebase/firebase'
 
 export default function PlayList(props) {
-
 
     const [urlInput, setUrlInput] = useState('');
     const [nameInput, setNameInput] = useState('');
@@ -14,6 +14,27 @@ export default function PlayList(props) {
     const [error, setError] = useState('');
     const [itemAdded, setItemAdded] = useState(false);
     const [successfull, setSuccessfull] = useState('');
+    const [playListData, setPlayListData] = useState([]);
+
+
+    useEffect(() =>{
+        auth.onAuthStateChanged((user) => {
+            if(user){
+                onValue(ref(db, `/${auth.currentUser.uid}`), snapshot => {
+                    setPlayListData([])
+                    const data = snapshot.val()
+                    if(data !== null){
+                        Object.values(data).map(items => {
+                            setPlayListData((oldArray) =>  [...oldArray, items])
+                        })
+                    }
+                })
+            }
+            else{
+                return
+            }
+        })
+    }, [])
 
 
     const handleUrlInputChange = event => {
@@ -124,19 +145,32 @@ export default function PlayList(props) {
 
                 </form>
 
-                {items.map(({text, text2}, index) => (
-        
-                <div className="mt-8 flex" key={index}>
-                    
-                    <button onClick={() => removeItem(index)} className="bg-red-500 mx-2 px-3">REMOVE</button>
-                    <button onClick={() => passSongUrlToParent(text)} className="bg-green-500 mx-2 px-3">PLAY</button>
-                    <ul className="text-xl" key={index}>
-                        <li className="flex gap-2"><span className="font-bold">SONG NAME:</span>{text2}</li>
-                        <li className="flex gap-2"><span className="font-bold">SONG URL:</span>{text}</li>
+                {playListData.map(items => (
+
+                <div className="mt-8 flex">
+
+                    <button onClick={() => removeItem()} className="bg-red-500 mx-2 px-3">REMOVE</button>
+                    <button onClick={() => passSongUrlToParent(items.PlaylistItem)} className="bg-green-500 mx-2 px-3">PLAY</button>
+                    <ul className="text-xl">
+                        <li className="flex gap-2"><span className="font-bold">SONG NAME:</span>{items.nameInput}</li>
+                        <li className="flex gap-2"><span className="font-bold">SONG URL:</span>{items.PlaylistItem}</li>
                     </ul>
                 </div>
-
                 ))}
+
+                {items.map(({text, text2}, index) => (
+            
+                    <div className="mt-8 flex" key={index}>
+                        
+                        <button onClick={() => removeItem(index)} className="bg-red-500 mx-2 px-3">REMOVE</button>
+                        <button onClick={() => passSongUrlToParent(text)} className="bg-green-500 mx-2 px-3">PLAY</button>
+                        <ul className="text-xl" key={index}>
+                            <li className="flex gap-2"><span className="font-bold">SONG NAME:</span>{text2}</li>
+                            <li className="flex gap-2"><span className="font-bold">SONG URL:</span>{text}</li>
+                        </ul>
+                    </div>
+                ))}
+
             </div>
             
         </div>
