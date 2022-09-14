@@ -23,8 +23,8 @@ export default function MainPage(){
     
     return(
 
-        <div className="bg-sky-50 pb-56">
-            <div className="p-4">
+        <div className="pb-56">
+            <div>
                 <Logout />
             </div>
             <div>

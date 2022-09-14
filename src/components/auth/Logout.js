@@ -21,7 +21,7 @@ export default function Logout(){
 
     return(
         <div className="flex justify-end">
-            <button onClick={handleSignOut} className="flex bg-indigo-400 text-white text-xl px-6 font-bold py-3 hover:bg-indigo-500 transition duration-200">
+            <button onClick={handleSignOut} className="absolute flex bg-indigo-400 text-white mt-4 mx-5 text-xl px-6 font-bold py-3 hover:bg-indigo-500 transition duration-200">
                 LOG OUT <AiOutlineLogout className="text-xl mx-2" style={{marginTop: '5px'}}  />
             </button>
         </div>

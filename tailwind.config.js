@@ -7,6 +7,9 @@ module.exports = {
     fontFamily: {
       'inter': ['Inter'],
     },
+    backgroundImage: {
+      'lofi': "url('https://wallpaperaccess.com/full/849790.gif')"
+    }
   },
   plugins: [],
 }
