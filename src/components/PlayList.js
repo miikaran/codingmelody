@@ -145,57 +145,63 @@ export default function PlayList(props) {
 
     return(
 
-        <div className="flex justify-center">
-            <div className="block bg-white rounded-sm shadow-xl p-10 space-y-5">
-                <span className="text-3xl font-bold">Add Songs To Your Playlist & <br /> Create New Ones.</span>
-                <hr className="border-2 w-20 border-gray-300 rounded-full" />
+        <div>
+            <div className="bg-white shadow-xl px-12 py-14 space-y-5">
 
-                <form onSubmit={handleSubmit} className="space-x-2 bg-gray-50 rounded-sm py-4 px-4 flex">
+                <div className="flex flex-col tracking-tight">
+                    <span className="text-4xl font-bold">Playlist Management</span>
+                    <span className="text-xl font-bold mt-3">Add Songs & Videos To Your Playlist.</span>
+                    <hr className="border mt-5 w-72 border-gray-300 rounded-full" />
+                </div>
 
-                    <input onChange={handleNameInputChange} value={name} type="text" className="py-3 pl-3 pr-10 text-sm rounded-sm border-2 border-gray-400" placeholder="Playlist Item Name Here.."/>        
-                    <input onChange={handleUrlInputChange} value={url} type="text" className="py-3 pl-3 pr-12 text-sm border-2 rounded-sm border-gray-400" placeholder="Item Url Here.."/>
+                <form onSubmit={handleSubmit} className="space-x-2 rounded-sm py-4 flex">
 
-                    <button type="submit" className="flex text-white mx-2 bg-indigo-400 px-4 py-2 rounded-sm text-xl font-bold">
-                        ADD ITEM<MdPlaylistAdd className="text-3xl mx-2" />           
+                    <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 pr-14 rounded-sm border border-gray-400" placeholder="Enter Name Here.."/>        
+                    <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 pr-14 border rounded-sm border-gray-400" placeholder="Url Here.."/>
+
+                    <button type="submit" className="flex text-white mx-2 bg-indigo-400 px-4 py-2 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
+                        ADD ITEM<MdPlaylistAdd className="text-2xl mx-2" />           
                     </button>
-                     
+                    
                 </form>
 
                 {itemAdded ? (
                         <div>
-                            <p className="text-green-300 font-bold mx-1">{successfull}</p>
+                            <p className="text-green-300 font-bold mx-1 absolute">{successfull}</p>
                         </div>
                     ): null}
 
                 {itemDeleted ? (
                     <div>
-                        <p className="text-red-500 font-bold mx-1">{deleted}</p>
+                        <p className="text-red-500 font-bold mx-1 absolute">{deleted}</p>
                     </div>
                 ): null}
 
                 <div className="block text-red-400 mx-1 font-bold">{error}</div>
 
-                <div class="flex">
-                    <select class="text-lg border-2 font-medium rounded-sm text-gray-600 pl-2 bg-gray-100">
-                        <option>Filter By Playlist</option>
-                        <option>Second</option>
-                    </select>
-                </div>
+                
+                <div className="flex justify-center">
 
-                {items.map(data => (
+                    <div className="grid grid-cols-2 gap-x-4">
+
+                        {items.map(data => (
             
-                    <div className="mt-8 flex bg-gray-200 bg-opacity-20 shadow-lg px-5 py-4 space-x-10 rounded-md">
-                        
-                        <ul className="text-lg space-y-1">
-                            <li className="font-bold">{data.name}</li>
-                            <li className="underline">{data.PlaylistItem}</li>
-                        </ul>
-    
-                        <button onClick={() => passSongUrlToParent(data.PlaylistItem)}><AiOutlinePlayCircle className="text-4xl" /></button>
-                        <button onClick={() => deleteFromFireBase(data.userId)}><BsTrash className="text-3xl text-red-700" /></button>
-                       
-                    </div>
-                ))}
+                            <div className="mt-4 bg-opacity-30 border flex bg-gray-200 px-5 py-4 gap-5 rounded-sm">
+                                
+                                <ul className="space-y-1">
+                                    <li className="font-bold text-sm">{data.name}</li>
+                                    <li className="underline text-xs">{data.PlaylistItem}</li>
+                                </ul>
+            
+                                <button onClick={() => passSongUrlToParent(data.PlaylistItem)}><AiOutlinePlayCircle className="text-2xl" /></button>
+                                <button onClick={() => deleteFromFireBase(data.userId)}><BsTrash className="text-2xl text-red-700" /></button>
+                            
+                            </div>
+
+                        ))}
+                    </div>  
+
+                </div>
 
             </div>
             
