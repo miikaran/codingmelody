@@ -5,11 +5,11 @@ import { uid } from 'uid'
 import { onAuthStateChanged } from 'firebase/auth'
 import { set, ref, onValue, remove } from 'firebase/database'
 import { auth, db } from '../firebase/firebase'
-import { IoIosPlay, IoIosRemoveCircle, IoIosRemoveCircleOutline } from 'react-icons/io'
-import { MdPlaylistAdd, MdRemove, MdOutlineDeleteForever } from 'react-icons/md'
-import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai'
+import { IoIosPlay, IoIosRemoveCircleOutline } from 'react-icons/io'
+import { MdPlaylistAdd } from 'react-icons/md'
+import { AiOutlineClose } from 'react-icons/ai'
 import { GiLoveSong } from 'react-icons/gi'
-import { RiPlayListFill, RiPlayListAddLine } from 'react-icons/ri'
+import { RiPlayListFill } from 'react-icons/ri'
 
 export default function PlayList(props) {
 
@@ -17,10 +17,12 @@ export default function PlayList(props) {
     const [name, setName] = useState('');
     const [error, setError] = useState('');
     const [items, setItems] = useState([]);
-    const [playlist, setPlaylist] = useState('');
+    const [playlist, setPlaylist] = useState('Default');
     const [search, setSearch] = useState('');
+    const [all, setAll] = useState('');
     const [searchedItems, setSearchedItems] = useState([]);
     const [addingItem, setAddingItem] = useState(false);
+    const [addingPlaylist, setAddingPlaylist] = useState(false);
     const [itemAdded, setItemAdded] = useState(false);
     const [successfull, setSuccessfull] = useState('');
     const [itemDeleted, setItemDeleted] = useState(false);
@@ -38,7 +40,7 @@ export default function PlayList(props) {
                     const data = snapshot.val()
                     if(data !== null){
                         Object.values(data).map((items) => {
-                            setItems((oldArray) => [...oldArray, items])
+                            setItems((oldArray) => [...oldArray, items])             
                         })
                     }
                 })
@@ -62,7 +64,7 @@ export default function PlayList(props) {
         setPlaylist(event.target.value);
     }
 
-  
+
     /*HANDLE ADDING
     PLAYLIST ITEMS*/
     const handleSubmit = (event) => { 
@@ -107,8 +109,7 @@ export default function PlayList(props) {
     }
 
 
-    const passSongUrlToParent = (url, name) => {
-        props.name(name)
+    const passSongUrlToParent = (url) => {
         props.url(url);
     }
 
@@ -130,6 +131,7 @@ export default function PlayList(props) {
         set(ref(db, `${auth.currentUser.uid}/${userId}`), {
             PlaylistItem: url, name,
             userId: userId,
+            PlaylistName: playlist,
         })
         setItemAdded(true);
         itemAddedSuccessfully();
@@ -148,6 +150,7 @@ export default function PlayList(props) {
         itemDeletedSuccessfully();
     }
 
+    
 
     /*SEARCH 
     PLAYLIST ITEMS*/
@@ -178,22 +181,43 @@ export default function PlayList(props) {
         <div className="bg-gray-900 text-white bg-opacity-20 px-4 py-14 space-y-7">
 
             <div className="flex justify-center space-x-3">
-                <button onClick={() => setAddingItem(true)}className="flex text-white text-lg bg-indigo-500 bg-opacity-60 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
+                <button onClick={() => setAddingItem(true)}className="flex text-white text-lg bg-indigo-500 bg-opacity-80 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
                         ADD SONGS<GiLoveSong className="text-2xl mx-2" />           
                 </button>
-                <button onClick={() => setAddingItem(true)}className="flex text-white text-lg bg-indigo-500 bg-opacity-60 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
+                <button onClick={() => setAddingPlaylist(true)}className="flex text-white text-lg bg-indigo-500 bg-opacity-80 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
                         ADD PLAYLISTS<RiPlayListFill className="text-2xl mx-2" />           
                 </button>
-                <button onClick={() => setAddingItem(true)}className="flex text-white text-lg bg-indigo-500 bg-opacity-60 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
+                {/*<button onClick={() => setAddingItem(true)}className="flex text-white text-lg bg-indigo-500 bg-opacity-80 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
                         CREATE PLAYLIST<RiPlayListAddLine className="text-2xl mx-2" />           
-                </button>
+                </button>*/}
+
+                <input onChange={(e) => searchItems(e.target.value)} type="text" className="pl-3 pr-20 py-2 rounded-sm text-lg bg-gray-900 bg-opacity-60 border" placeholder="Search Your Songs..."/>                 
+
             </div>
+
+
+            { addingPlaylist ? (
+
+                <div className="mx-24 bg-gray-900 bg-opacity-60 px-6 py-4 border">    
+                    <button onClick={() => setAddingPlaylist(false)} className="flex border py-1 px-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
+                    <span className="text-2xl font-bold">ADDING PLAYLIST</span>
+                    <form onSubmit={handleSubmit} className="space-x-2 rounded-sm py-2 flex">
+                        <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 pr-4 rounded-sm bg-gray-900 bg-opacity-60 border" placeholder="Enter Name Here.."/>        
+                        <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 pr-4 border rounded-sm bg-gray-900 bg-opacity-60" placeholder="Url Here.."/>
+                        
+                        <button type="submit" className="flex text-white mx-2 bg-indigo-400 px-4 py-2 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
+                            ADD PLAYLIST<MdPlaylistAdd className="text-2xl mx-2" />           
+                        </button>
+                    </form>
+                </div>
+            ): null}
 
 
             { addingItem ? (
 
                 <div className="mx-24 bg-gray-900 bg-opacity-60 px-6 py-4 border">
                     <button onClick={() => setAddingItem(false)} className="flex border py-1 px-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
+                    <span className="text-2xl font-bold">ADDING SONGS</span>
                     <form onSubmit={handleSubmit} className="space-x-2 rounded-sm py-2 flex">
                         <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 pr-4 rounded-sm bg-gray-900 bg-opacity-60 border" placeholder="Enter Name Here.."/>        
                         <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 pr-4 border rounded-sm bg-gray-900 bg-opacity-60" placeholder="Url Here.."/>
@@ -203,7 +227,6 @@ export default function PlayList(props) {
                         </button>
                     </form>
                 </div>
-
             ): null}
 
 
@@ -223,23 +246,23 @@ export default function PlayList(props) {
             <div className="block text-red-400 mx-1 font-bold">{error}</div>
 
             <div className="flex justify-center space-x-3">
-                <select className="text-sm border font-medium rounded-sm text-white px-4 py-1 mt-1 bg-gray-900">
-                    <option>Choose Playlist..</option>
-                    <option>Second</option>
-                </select>
-
-                <input onChange={(e) => searchItems(e.target.value)}type="text" className="pl-3 pr-12 rounded-sm text-lg bg-gray-900 bg-opacity-60 border" placeholder="Search Playlist Songs..."/>                  
+                
+                {/*<select onChange={handlePlaylistChange} className="text-sm border font-medium rounded-sm text-white px-4 py-1 mt-1 bg-gray-900">                
+                        <option>yessir</option>                   
+                    </select>*/}
             </div>
 
-            <div className="flex justify-center">
-                <span className="text-2xl font-bold">Current Playlist - <span className="font-normal italic">Chill Yessir</span></span>
-            </div>
+            {/*<div className="flex justify-center">
+                <span className="text-2xl font-bold">Current Playlist - <span className="font-normal italic">Default</span></span>
+            </div>*/}
+
 
             {noMatches ? (
                 <div>
                     Nothing here
                 </div>
             ): null}
+
 
             <div className="mx-52 md:mx-0 grid grid-cols-1 md:grid-cols-2">
 
@@ -255,9 +278,8 @@ export default function PlayList(props) {
                                         <li className="font-bold text-sm">{item.name}</li>
                                     </ul>
             
-                                    <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))}><IoIosPlay className="text-2xl" /></button>
-                                    <button onClick={() => deleteFromFireBase(item.userId)}><IoIosRemoveCircleOutline className="text-2xl text-red-500" /></button> 
-                                    
+                                    <button onClick={() => passSongUrlToParent(item.PlaylistItem)}><IoIosPlay className="text-2xl" /></button>
+                                    <button onClick={() => deleteFromFireBase(item.userId)}><IoIosRemoveCircleOutline className="text-2xl text-red-500" /></button>                               
                                 </div>
                             )
                         })
