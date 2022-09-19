@@ -2,7 +2,6 @@ import React from 'react';
 import ReactPlayer from 'react-player/lazy'
 import { useState } from 'react'
 import PlayList from './PlayList'
-import BuiltInMusic from './BuiltInMusic'
 
 export default function MusicPlayer(){
 
@@ -17,14 +16,6 @@ export default function MusicPlayer(){
     // PLAYLIST MUSIC //
     const [playList, setPlayList] = useState(false);
 
-
-    const BuiltIn = (url) =>{
-        setUrl(url);
-        setControls(true);
-        setPlaying(true);
-    }
-
-
     const PlayListMusic = (url) => {
         setUrl(url)
         setPlaying(true);
@@ -36,14 +27,14 @@ export default function MusicPlayer(){
     return(
 
         <div className="flex justify-center bg-[url('https://steamuserimages-a.akamaihd.net/ugc/945094571616867748/680E4979CC75A2310664E0883F3F3FC6CBECA3BE/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false')] bg-cover">   
-            <div className="mt-32 backdrop-blur-sm">
-                <div className="flex flex-col items-center bg-gray-900 bg-opacity-30">
+            <div className="py-32 backdrop-blur-sm">
+                <div className="bg-gray-900 bg-opacity-30">
                     <div>
                         {playList ? (
                             <div className="rounded-sm">
                                 <ReactPlayer
                                     width='850px'
-                                    height='350px'
+                                    height='450px'
                                     loop = {loop}
                                     url={url}
                                     controls={controls}
@@ -65,8 +56,7 @@ export default function MusicPlayer(){
                     </div> 
                     <PlayList url={PlayListMusic}/>
                 </div>
-            </div> 
-            <BuiltInMusic url={BuiltIn} />      
+            </div>     
         </div>
 
     )

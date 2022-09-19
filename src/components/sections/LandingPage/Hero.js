@@ -11,7 +11,7 @@ export default function Welcome(){
                     <span className="text-indigo-300 tracking-widest font-inter text-lg"><a href="/Signup">0.1 Get Started</a></span>
                     <span className="text-4xl sm:text-6xl font-bold text-gray-100 leading-tight tracking-tighter">Enjoy Music Through <br />Cloud For Free. </span>
                     <p className="max-w-2xl text-gray-200 py-4 text-left" style={{fontSize: '1.4rem'}}>
-                    Listen to your favourite music from youtube and make your own playlists fully free of charge.
+                    Listen to your favourite music & playlists from youtube without ads fully free of charge.
                     <span className="font-bold"> Basically Spotify, but FREE.</span></p>
         
                     <div className="flex gap-4">

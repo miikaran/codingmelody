@@ -23,13 +23,9 @@ export default function MainPage(){
     
     return(
 
-        <div className="pb-56">
-            <div>
-                <Logout />
-            </div>
-            <div>
-                <MusicPlayer />
-            </div>
-        </div>
+        <>      
+            <Logout />
+            <MusicPlayer />       
+        </>
     )
 }

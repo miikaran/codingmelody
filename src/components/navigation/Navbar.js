@@ -80,12 +80,6 @@ export default function Navbar(){
                
                     </li>
 
-                    <li>
-                    <Link to="/" className="hover:text-gray-300" >
-                        GET IN TOUCH
-                    </Link>
-                    </li>    
-
                     <div className="flex space-x-8">
                         <li>
                         <Link to="/Login" className="text-xl font-bold text-white flex rounded-full bg-rose-400 py-3 px-8 hover:bg-rose-500 transition duration-200">
