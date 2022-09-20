@@ -31,8 +31,9 @@ export default function MusicPlayer(){
                 <div className="bg-gray-900 bg-opacity-30">
                     <div>
                         {playList ? (
-                            <div className="rounded-sm">
+                            <div className="rounded-sm test h-60 sm:h-96">
                                 <ReactPlayer
+                                    wrapper = 'test'
                                     width='850px'
                                     height='450px'
                                     loop = {loop}
@@ -43,7 +44,7 @@ export default function MusicPlayer(){
                                 />
                             </div>    
                         ): 
-                        <div className="rounded-sm test max-w-2xl md:max-w-4xl sm:h-96">
+                        <div className="rounded-sm test h-60 sm:h-96">
                             <ReactPlayer
                                 wrapper = 'test'
                                 width='850px'

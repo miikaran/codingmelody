@@ -170,9 +170,9 @@ export default function PlayList(props) {
 
     return(
 
-        <div className="bg-gray-900 text-white bg-opacity-20 px-4 space-y-10 mt-10">
+        <div className="text-white bg-opacity-20 px-4 space-y-10 mt-10">
 
-            <div className="flex justify-center space-x-3">
+            <div className="sm:flex justify-center space-x-0 space-y-6 sm:space-y-0 sm:space-x-3">
                 <button onClick={() => setAddingItem(true)}className="flex text-white text-lg bg-indigo-500 bg-opacity-80 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
                         ADD SONGS<GiLoveSong className="text-2xl mx-2" />           
                 </button>
@@ -182,14 +182,14 @@ export default function PlayList(props) {
 
             { addingItem ? (
 
-                <div className="mx-24 bg-gray-900 bg-opacity-60 px-6 py-4 border">
-                    <button onClick={() => setAddingItem(false)} className="flex border py-1 px-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
+                <div className="md:mx-24 bg-gray-900 bg-opacity-60 px-6 py-4 border">
+                    <button onClick={() => setAddingItem(false)} className="flex border py-2 sm:py-1 px-3 sm:px-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
                     <span className="text-2xl font-bold">ADDING SONGS</span>
-                    <form onSubmit={handleSubmit} className="space-x-2 rounded-sm py-2 flex">
-                        <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 pr-4 rounded-sm bg-gray-900 bg-opacity-60 border" placeholder="Enter Name Here.."/>        
-                        <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 pr-4 border rounded-sm bg-gray-900 bg-opacity-60" placeholder="Url Here.."/>
+                    <form onSubmit={handleSubmit} className="sm:space-x-2 rounded-sm py-2 space-y-4 sm:space-y-0 sm:flex">
+                        <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 pr-4 py-3 sm:py-0 rounded-sm bg-gray-900 bg-opacity-60 border" placeholder="Enter Name Here.."/>        
+                        <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 pr-4 border py-3 sm:py-0 rounded-sm bg-gray-900 bg-opacity-60" placeholder="Url Here.."/>
                         
-                        <button type="submit" className="flex text-white mx-2 bg-indigo-400 px-4 py-2 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
+                        <button type="submit" className="flex text-white sm:mx-2 bg-indigo-400 px-4 py-2 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
                             ADD ITEM<MdPlaylistAdd className="text-2xl mx-2" />           
                         </button>
                     </form>
@@ -199,14 +199,15 @@ export default function PlayList(props) {
 
 
             {itemAdded ? (
-                    <div>
-                        <p className="text-green-300 font-bold mx-1 absolute">{successfull}</p>
+                    <div className="ml-20">
+                        <p className="text-green-300 font-bold mx-1">{successfull}</p>
                     </div>
-                ): null}
+            ): null}
+             
 
             {itemDeleted ? (
-                <div>
-                    <p className="text-red-500 font-bold mx-1 absolute">{deleted}</p>
+                <div className="ml-4 sm:ml-20">
+                    <p className="text-red-500 font-bold mx-1">{deleted}</p>
                 </div>
             ): null}
 
@@ -220,7 +221,7 @@ export default function PlayList(props) {
             ): null}
 
 
-            <div className="mx-52 md:mx-0 grid grid-cols-1 md:grid-cols-2">
+            <div className="sm:mx-12 grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-0">
 
                 {search.length > 0 ? (
                         searchedItems.map((item) => {
@@ -244,14 +245,13 @@ export default function PlayList(props) {
 
                             return(
 
-                                <div className="bg-opacity-30 border border-white border-opacity-5 space-x-4 flex bg-gray-900 px-5 py-3 rounded-sm">
-                                    <div className="w-12">
+                                <div className="bg-opacity-30 border border-white border-opacity-5 sm:space-x-4 flex bg-gray-900 px-5 py-3 rounded-sm">
+                                    <div className="w-12 flex justify-center items-center">
                                         <img src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/146301004/original/265af19662a8925f79d1e3d2daff3c5c8277ee3c/create-album-covers-and-song-covers-for-cheap.jpg" />
                                     </div>
 
-                                    <ul className="mt-3">
-                                        <li className="font-bold text-sm">{data.name}</li>
-                                    </ul>
+                                    <p className="flex pl-3 items-center font-bold text-xs sm:text-sm">{data.name}</p>
+                        
                                     <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay className="text-2xl" /></button>
                                     <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-2xl text-red-500" /></button>                                                
                                 </div>
