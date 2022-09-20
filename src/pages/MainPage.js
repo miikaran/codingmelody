@@ -24,8 +24,8 @@ export default function MainPage(){
     return(
 
         <>      
-            <Logout />
-            <MusicPlayer />       
+        <Logout />
+        <MusicPlayer />       
         </>
     )
 }

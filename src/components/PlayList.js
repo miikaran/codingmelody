@@ -182,7 +182,7 @@ export default function PlayList(props) {
 
             { addingItem ? (
 
-                <div className="md:mx-24 bg-gray-900 bg-opacity-60 px-6 py-4 border">
+                <div className="md:ml-52 bg-gray-900 px-6 py-6 border absolute">
                     <button onClick={() => setAddingItem(false)} className="flex border py-2 sm:py-1 px-3 sm:px-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
                     <span className="text-2xl font-bold">ADDING SONGS</span>
                     <form onSubmit={handleSubmit} className="sm:space-x-2 rounded-sm py-2 space-y-4 sm:space-y-0 sm:flex">
