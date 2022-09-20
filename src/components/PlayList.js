@@ -222,22 +222,21 @@ export default function PlayList(props) {
             ): null}
 
 
-            <div className="lg:mx-4 grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-0">
+            <div className="lg:mx-4 grid grid-cols-1 lg:grid-cols-2 pb-10 gap-2 sm:gap-0">
 
                 {search.length > 0 ? (
                         searchedItems.map((item) => {
                             return (
-                                <div className="bg-opacity-30 border border-white border-opacity-5 flex space-x-4 bg-gray-900 px-5 py-3 rounded-sm">
+                                <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))} className="bg-opacity-30 border border-white border-opacity-5 flex space-x-4 bg-gray-900 px-5 py-3 rounded-sm">
                                     <div className="w-12">
                                         <img alt="Thumbnail" src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/146301004/original/265af19662a8925f79d1e3d2daff3c5c8277ee3c/create-album-covers-and-song-covers-for-cheap.jpg" />
                                     </div>
             
-                                    <ul className="mt-3">
-                                        <li className="font-bold text-sm">{item.name}</li>
-                                    </ul>
-                                    <button onClick={() => passSongUrlToParent(item.PlaylistItem)}><IoIosPlay className="text-2xl" /></button>
-                                    <button onClick={() => deleteFromFireBase(item.userId)}><IoIosRemoveCircleOutline className="text-2xl text-red-500" /></button>                               
-                                </div>
+                                    <p className="sm:pl-3 mt-3 font-bold text-xs sm:text-sm">{item.name}</p>
+
+                                    <button onClick={() => passSongUrlToParent(item.PlaylistItem)}><IoIosPlay className="mt-3 text-2xl" /></button>
+                                    <button onClick={() => deleteFromFireBase(item.userId)}><IoIosRemoveCircleOutline className="text-2xl mt-3 text-red-500" /></button>                               
+                                </button>
                             )
                         })
                     ) : (
@@ -246,7 +245,7 @@ export default function PlayList(props) {
 
                             return(
 
-                                <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))} className="bg-opacity-30 border border-white border-opacity-5 space-x-2 sm:space-x-4 flex bg-gray-900 px-5 py-6 sm:py-3 rounded-sm">
+                                <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))} className="bg-opacity-30 border border-white border-opacity-5 space-x-1 sm:space-x-4 flex bg-gray-900 px-5 py-6 sm:py-3 rounded-sm">
                                     <div className="w-10 sm:w-12">
                                         <img alt="Thumbnail" src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/146301004/original/265af19662a8925f79d1e3d2daff3c5c8277ee3c/create-album-covers-and-song-covers-for-cheap.jpg" />
                                     </div>
@@ -254,7 +253,7 @@ export default function PlayList(props) {
                                     <p className="sm:pl-3 mt-3 font-bold text-xs sm:text-sm">{data.name}</p>
                         
                                     <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay className="mt-3 text-2xl" /></button>
-                                    <button onClick={() => setConfirmDelete(true)}><IoIosRemoveCircleOutline className="text-2xl mt-3 sm:ml-0 text-red-500" /></button>                                                
+                                    <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-2xl mt-3 text-red-500" /></button>                                                
                                 </button>
                             )
 
