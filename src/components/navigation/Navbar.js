@@ -2,7 +2,6 @@ import React from 'react';
 import { useState } from "react";
 import { BiLogInCircle } from 'react-icons/bi'
 import { RiContactsFill } from 'react-icons/ri'
-import  AboutModal from '../AboutModal'
 import Logo from '../../assets/Untitled (2).svg'
 import { Link } from 'react-router-dom';
 
@@ -10,8 +9,7 @@ import { Link } from 'react-router-dom';
 export default function Navbar(){
 
     const [navbar, setNavbar] = useState(false);
-    const [showAbout, setShowAbout] = useState(false);
-
+    
     return(
         <nav className="w-full">
         <div className="justify-between px-4 mx-auto lg:max-w-8xl lg:items-center lg:flex lg:px-28">
@@ -66,29 +64,16 @@ export default function Navbar(){
                     }`}
                 >
                     <ul className="items-center text-gray-100 font-bold tracking-tighter justify-center text-xl space-y-6 lg:flex lg:space-x-20 lg:space-y-0">                           
-                    
-                    <li>
-                    <Link to="/" onMouseEnter={() => setShowAbout(true)} onMouseLeave={() => setShowAbout(false)} className="hover:text-gray-300">
-                        ABOUT
-                    </Link>  
 
-                    { showAbout ? (
-
-                        <AboutModal /> 
-
-                    ): null} 
-               
-                    </li>
-
-                    <div className="flex space-x-8">
+                    <div className="sm:flex space-y-5 sm:space-y-0 sm:space-x-8">
                         <li>
-                        <Link to="/Login" className="text-xl font-bold text-white flex rounded-full bg-rose-400 py-3 px-8 hover:bg-rose-500 transition duration-200">
+                        <Link to="/Login" className="text-lg sm:text-xl font-bold text-white flex rounded-full bg-rose-400 py-3 px-8 hover:bg-rose-500 transition duration-200">
                             LOG IN <BiLogInCircle className="mt-1 text-2xl mx-1" />
                         </Link>
                         </li>
 
                         <li>
-                        <Link to="/Signup" className="text-xl flex rounded-full text-white bg-indigo-400 py-3 px-8 hover:bg-indigo-500 transition duration-200">
+                        <Link to="/Signup" className="text-lg sm:text-xl flex rounded-full text-white bg-indigo-400 py-3 px-8 hover:bg-indigo-500 transition duration-200">
                             SIGN UP <RiContactsFill className="text-xl mx-2" style={{marginTop: '5px'}} />
                         </Link>
                         </li>  

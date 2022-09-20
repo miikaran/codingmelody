@@ -1,12 +1,14 @@
 import React from 'react'
 import DemoImg2 from '../../../assets/Demoimg2.PNG'
 import { Link } from 'react-router-dom';
+import { BsCodeSlash } from 'react-icons/bs'
+
 
 export default function About(){
 
     return(
         <section className="py-16 bg-white">
-            <div className="ml-40 lg:ml-72 lg:flex">
+            <div className="ml-4 sm:ml-20 md:ml-40 lg:ml-72 xl:flex">
                 <div className="text-gray-700 mt-20">
                     <span className="text-4xl font-bold">What's CodingMelody All About?</span>
                     <div className="pt-4 w-20">
@@ -25,16 +27,12 @@ export default function About(){
                             <p>When you're playing songs it embeds the song/video by the URL you gave to it when adding the song to your list.</p>
                         </div>
                     </div>
-                    <div className="mt-10 space-x-4">
-                        <Link to="/Signup">
-                            <a className="text-2xl bg-indigo-500 py-3 rounded-sm px-6 font-bold text-white hover:bg-indigo-600 transition duration-200">SIGN UP NOW!</a>
-                        </Link>
-                        <Link to="/Signup">
-                            <a className="text-2xl bg-indigo-500 py-3 rounded-sm px-6 font-bold text-white hover:bg-indigo-600 transition duration-200">SOURCE</a>
-                        </Link>
+                    <div className="mt-10 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">         
+                        <a className="sm:text-2xl bg-indigo-500 py-3 rounded-sm px-6 font-bold mr-24 sm:mr-0 text-white hover:bg-indigo-600 transition duration-200">SIGN UP NOW!</a>               
+                        <a href="https://github.com/miikaran/codingmelody" className="sm:text-2xl bg-indigo-500 mr-24 sm:mr-0 py-3 rounded-sm px-6 font-bold text-white hover:bg-indigo-600 transition duration-200 flex">SOURCE <BsCodeSlash className="ml-2 mt-1" /></a>          
                     </div>
                 </div>
-                <img className="max-w-lg md:mt-12 lg:mt-0 lg:ml-28 rounded-md shadow-2xl shadow-indigo-800" src={DemoImg2} />
+                <img className=" hidden md:block sm:max-w-sm md:max-w-md xl:max-w-lg mt-20 md:mt-12 lg:mt-12 xl:ml-28 rounded-md shadow-2xl shadow-indigo-800" src={DemoImg2} />
             </div>
         </section>
     )

@@ -39,6 +39,12 @@ body {
   to   { opacity: 1; }
 }
 
+@media (max-width: 800px){
+  .welcome{
+    background-position: 0vw -500vh;
+  }
+}
+
 
 
 

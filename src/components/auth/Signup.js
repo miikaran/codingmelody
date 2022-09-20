@@ -39,16 +39,16 @@ export default function Signup(){
 
     return(
 
-        <div className="flex justify-center mt-32 mr-32">
-            <img className="bg-sky-200 px-14 bg-opacity-80 max-w-md" src={SignupImg} alt="Signup" />          
-            <div className="bg-sky-200 bg-opacity-90 space-y-6 px-16 pb-10 pt-2">
-                <img className="max-w-sm mx-2" src={Logo} />
+        <div className="flex justify-center mt-16 sm:mt-32">
+            <img className="bg-sky-200 px-14 bg-opacity-80 max-w-md hidden lg:block" src={SignupImg} alt="Signup" />          
+            <div className="bg-sky-200 bg-opacity-90 space-y-6 px-8 sm:px-16 max-w-sm sm:max-w-lg pb-10 pt-10 sm:pt-2">
+                <img src={Logo} />
                 <div className="space-y-10">
                     <div className="space-y-5 flex flex-col">
                         <input className="py-3 px-4 rounded-sm" onChange={(e) => setUserCredentials({...userCredentials, email: e.target.value})} value={userCredentials.email} placeholder="Enter Your Email.." type="email" />                
                         <input className="py-3 px-4 rounded-sm" onChange={(e) => setUserCredentials({...userCredentials, password: e.target.value})} value={userCredentials.password} placeholder="Enter Your Password.." type="password" />
                         <input className="py-3 px-4 rounded-sm" onChange={(e) => setUserCredentials({...userCredentials, checkPassword: e.target.value})} value={userCredentials.checkPassword} placeholder="Confirm Your Password.." type="password" />
-                        <button onClick={handleSignUp} className="bg-indigo-500 rounded-sm font-bold p-2 text-2xl mx-4 text-white hover:bg-indigo-600 transition duration-200">CREATE ACCOUNT</button>
+                        <button onClick={handleSignUp} className="bg-indigo-500 rounded-sm font-bold p-2 px-4 sm:px-0 text-lg sm:text-2xl mx-4 text-white hover:bg-indigo-600 transition duration-200">CREATE ACCOUNT</button>
                     </div>
                 </div>
                 

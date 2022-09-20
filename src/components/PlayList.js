@@ -244,7 +244,7 @@ export default function PlayList(props) {
 
                             return(
 
-                                <div className="bg-opacity-30 border border-white border-opacity-5 space-x-4  flex bg-gray-900 px-5 py-3 rounded-sm">
+                                <div className="bg-opacity-30 border border-white border-opacity-5 space-x-4 flex bg-gray-900 px-5 py-3 rounded-sm">
                                     <div className="w-12">
                                         <img src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/146301004/original/265af19662a8925f79d1e3d2daff3c5c8277ee3c/create-album-covers-and-song-covers-for-cheap.jpg" />
                                     </div>
