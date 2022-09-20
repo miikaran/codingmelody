@@ -9,7 +9,6 @@ import { IoIosPlay, IoIosRemoveCircleOutline } from 'react-icons/io'
 import { MdPlaylistAdd } from 'react-icons/md'
 import { AiOutlineClose } from 'react-icons/ai'
 import { GiLoveSong } from 'react-icons/gi'
-import { RiPlayListFill } from 'react-icons/ri'
 
 export default function PlayList(props) {
 
@@ -21,6 +20,7 @@ export default function PlayList(props) {
     const [searchedItems, setSearchedItems] = useState([]);
     const [addingItem, setAddingItem] = useState(false);
     const [itemAdded, setItemAdded] = useState(false);
+    const [confirmDelete, setConfirmDelete] = useState(false);
     const [successfull, setSuccessfull] = useState('');
     const [itemDeleted, setItemDeleted] = useState(false);
     const [deleted, setDeleted] = useState('');
@@ -134,12 +134,14 @@ export default function PlayList(props) {
     ITEMS FROM FIREBASE*/ 
     const deleteFromFireBase = (uid) => {
 
-        remove(ref(db, `${auth.currentUser.uid}/${uid}`))
-        .catch((err) => {
-            alert(err.message)
-        })
-        setItemDeleted(true);
-        itemDeletedSuccessfully();
+        if(confirmDelete){
+            remove(ref(db, `${auth.currentUser.uid}/${uid}`))
+            .catch((err) => {
+                alert(err.message)
+            })
+            setItemDeleted(true);
+            itemDeletedSuccessfully();
+        }
     }
 
     
@@ -155,7 +157,7 @@ export default function PlayList(props) {
             })
             setSearchedItems(data)
 
-            if(data.length == 0){
+            if(data.length === 0){
                 setNoMatches(true)
             }
             else{
@@ -170,9 +172,9 @@ export default function PlayList(props) {
 
     return(
 
-        <div className="text-white bg-opacity-20 px-4 space-y-10 mt-10">
+        <div className="text-white bg-opacity-20 sm:px-12 space-y-10 mt-10">
 
-            <div className="sm:flex justify-center space-x-0 space-y-6 sm:space-y-0 sm:space-x-3">
+            <div className="flex flex-col sm:flex-row justify-center mx-2 sm:mx-0 space-x-0 space-y-6 sm:space-y-0 sm:space-x-3">
                 <button onClick={() => setAddingItem(true)}className="flex text-white text-lg bg-indigo-500 bg-opacity-80 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
                         ADD SONGS<GiLoveSong className="text-2xl mx-2" />           
                 </button>
@@ -182,20 +184,19 @@ export default function PlayList(props) {
 
             { addingItem ? (
 
-                <div className="md:ml-52 bg-gray-900 px-6 py-6 border absolute">
+                <div className="lg:ml-24 bg-gray-900 px-7 py-6 border lg:absolute">
                     <button onClick={() => setAddingItem(false)} className="flex border py-2 sm:py-1 px-3 sm:px-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
                     <span className="text-2xl font-bold">ADDING SONGS</span>
-                    <form onSubmit={handleSubmit} className="sm:space-x-2 rounded-sm py-2 space-y-4 sm:space-y-0 sm:flex">
-                        <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 pr-4 py-3 sm:py-0 rounded-sm bg-gray-900 bg-opacity-60 border" placeholder="Enter Name Here.."/>        
-                        <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 pr-4 border py-3 sm:py-0 rounded-sm bg-gray-900 bg-opacity-60" placeholder="Url Here.."/>
+                    <form onSubmit={handleSubmit} className="md:space-x-2 rounded-sm py-2 space-y-3 sm:space-y-0 flex flex-col sm:flex-row">
+                        <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 pr-4 py-2 sm:py-0 rounded-sm bg-gray-900 bg-opacity-60 border" placeholder="Enter Name Here.."/>        
+                        <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 pr-4 border py-2 sm:py-0 rounded-sm bg-gray-900 bg-opacity-60" placeholder="Enter Url Here.."/>
                         
-                        <button type="submit" className="flex text-white sm:mx-2 bg-indigo-400 px-4 py-2 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
+                        <button type="submit" className="flex text-white md:mx-2 bg-indigo-400 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
                             ADD ITEM<MdPlaylistAdd className="text-2xl mx-2" />           
                         </button>
                     </form>
                 </div>
             ): null}
-
 
 
             {itemAdded ? (
@@ -221,14 +222,14 @@ export default function PlayList(props) {
             ): null}
 
 
-            <div className="sm:mx-12 grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-0">
+            <div className="lg:mx-4 grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-0">
 
                 {search.length > 0 ? (
                         searchedItems.map((item) => {
                             return (
                                 <div className="bg-opacity-30 border border-white border-opacity-5 flex space-x-4 bg-gray-900 px-5 py-3 rounded-sm">
                                     <div className="w-12">
-                                        <img src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/146301004/original/265af19662a8925f79d1e3d2daff3c5c8277ee3c/create-album-covers-and-song-covers-for-cheap.jpg" />
+                                        <img alt="Thumbnail" src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/146301004/original/265af19662a8925f79d1e3d2daff3c5c8277ee3c/create-album-covers-and-song-covers-for-cheap.jpg" />
                                     </div>
             
                                     <ul className="mt-3">
@@ -245,16 +246,16 @@ export default function PlayList(props) {
 
                             return(
 
-                                <div className="bg-opacity-30 border border-white border-opacity-5 sm:space-x-4 flex bg-gray-900 px-5 py-3 rounded-sm">
-                                    <div className="w-12 flex justify-center items-center">
-                                        <img src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/146301004/original/265af19662a8925f79d1e3d2daff3c5c8277ee3c/create-album-covers-and-song-covers-for-cheap.jpg" />
+                                <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))} className="bg-opacity-30 border border-white border-opacity-5 space-x-2 sm:space-x-4 flex bg-gray-900 px-5 py-6 sm:py-3 rounded-sm">
+                                    <div className="w-10 sm:w-12">
+                                        <img alt="Thumbnail" src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/146301004/original/265af19662a8925f79d1e3d2daff3c5c8277ee3c/create-album-covers-and-song-covers-for-cheap.jpg" />
                                     </div>
 
-                                    <p className="flex pl-3 items-center font-bold text-xs sm:text-sm">{data.name}</p>
+                                    <p className="sm:pl-3 mt-3 font-bold text-xs sm:text-sm">{data.name}</p>
                         
-                                    <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay className="text-2xl" /></button>
-                                    <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-2xl text-red-500" /></button>                                                
-                                </div>
+                                    <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay className="mt-3 text-2xl" /></button>
+                                    <button onClick={() => setConfirmDelete(true)}><IoIosRemoveCircleOutline className="text-2xl mt-3 sm:ml-0 text-red-500" /></button>                                                
+                                </button>
                             )
 
                         })
