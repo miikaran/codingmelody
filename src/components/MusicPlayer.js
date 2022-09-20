@@ -24,7 +24,7 @@ export default function MusicPlayer(){
 
     return(
 
-        <div className="flex justify-center py-40 bg-[url('https://steamuserimages-a.akamaihd.net/ugc/945094571616867748/680E4979CC75A2310664E0883F3F3FC6CBECA3BE/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false')] bg-cover">   
+        <div className="flex justify-center py-40 bg-mainpage bg-cover">   
             <div className="xl:backdrop-blur-sm">
                 <div className="bg-gray-900 bg-opacity-30">
                     <div>
