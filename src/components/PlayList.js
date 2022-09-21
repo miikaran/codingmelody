@@ -250,7 +250,7 @@ export default function PlayList(props) {
                                         <img alt="Thumbnail" src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/146301004/original/265af19662a8925f79d1e3d2daff3c5c8277ee3c/create-album-covers-and-song-covers-for-cheap.jpg" />
                                     </div>
 
-                                    <p className="sm:pl-3 mt-3 font-bold text-xs sm:text-sm">{data.name}</p>
+                                    <p className="sm:pl-3 mt-3 md:pr-5 font-bold text-xs sm:text-sm">{data.name}</p>
                         
                                     <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay className="mt-3 text-2xl" /></button>
                                     <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-2xl mt-3 text-red-500" /></button>                                                
