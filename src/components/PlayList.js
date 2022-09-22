@@ -20,7 +20,6 @@ export default function PlayList(props) {
     const [searchedItems, setSearchedItems] = useState([]);
     const [addingItem, setAddingItem] = useState(false);
     const [itemAdded, setItemAdded] = useState(false);
-    const [confirmDelete, setConfirmDelete] = useState(false);
     const [successfull, setSuccessfull] = useState('');
     const [itemDeleted, setItemDeleted] = useState(false);
     const [deleted, setDeleted] = useState('');
@@ -134,17 +133,14 @@ export default function PlayList(props) {
     ITEMS FROM FIREBASE*/ 
     const deleteFromFireBase = (uid) => {
 
-        if(confirmDelete){
-            remove(ref(db, `${auth.currentUser.uid}/${uid}`))
-            .catch((err) => {
-                alert(err.message)
-            })
-            setItemDeleted(true);
-            itemDeletedSuccessfully();
-        }
+        remove(ref(db, `${auth.currentUser.uid}/${uid}`))
+        .catch((err) => {
+            alert(err.message)
+        })
+        setItemDeleted(true);
+        itemDeletedSuccessfully();  
     }
 
-    
 
     /*SEARCH 
     PLAYLIST ITEMS*/
@@ -184,8 +180,8 @@ export default function PlayList(props) {
 
             { addingItem ? (
 
-                <div className="lg:ml-44 bg-gray-900 px-7 py-6 border lg:absolute">
-                    <button onClick={() => setAddingItem(false)} className="flex border py-2 sm:py-1 px-3 sm:px-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
+                <div className="flex flex-col justify-center lg:mx-32 bg-gray-900 px-7 py-6 border">
+                    <button onClick={() => setAddingItem(false)} className="border py-2 sm:py-1 w-8 px-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
                     <span className="text-2xl font-bold">ADDING SONGS</span>
                     <form onSubmit={handleSubmit} className="md:space-x-2 rounded-sm py-2 space-y-3 sm:space-y-0 flex flex-col sm:flex-row">
                         <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 pr-4 py-2 sm:py-0 rounded-sm bg-gray-900 bg-opacity-60 border" placeholder="Enter Name Here.."/>        

@@ -9,7 +9,6 @@ export default function MusicPlayer(){
     const [playing, setPlaying] = useState(false);
     const [url, setUrl] = useState();
     const [controls, setControls] = useState(true);
-    const [volume, setVolume] = useState(1);
 
     // PLAYLIST MUSIC //
     const [playList, setPlayList] = useState(false);
