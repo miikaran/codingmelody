@@ -28,6 +28,7 @@ export default function PlayList(props) {
     const [deleted, setDeleted] = useState('');
     const [noMatches, setNoMatches] = useState(false);
     const [playlists, setPlaylists] = useState([]);
+
     
     /*READS USERS PLAYLIST
     DATA FROM FIREBASE*/
@@ -174,6 +175,7 @@ export default function PlayList(props) {
     }
 
 
+
     /*SEARCH 
     PLAYLIST ITEMS*/
     const searchItems = (searchValue) => {
@@ -214,7 +216,7 @@ export default function PlayList(props) {
 
     return(
 
-        <div className="text-white bg-opacity-20 sm:px-12 space-y-10 mt-10">
+        <div className="text-white bg-opacity-20 sm:px-12 space-y-7 mt-10">
 
             <div className="flex flex-col sm:flex-row justify-center mx-2 sm:mx-0 space-x-0 space-y-6 sm:space-y-0 sm:space-x-3">
                 <button onClick={() => setAddingItem(true)}className="flex text-white text-lg bg-indigo-500 bg-opacity-80 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
@@ -242,6 +244,7 @@ export default function PlayList(props) {
                     </form>
                 </div>
             ): null}
+
 
 
             { addingPlaylist ? (
@@ -276,8 +279,8 @@ export default function PlayList(props) {
             <div className="block text-red-400 mx-1 font-bold">{error}</div>
 
             
-            <div className="flex justify-center space-x-3">
-                <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border font-medium rounded-sm text-white px-4 py-1 mt-1 bg-gray-900">
+            <div>
+                <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border font-medium rounded-sm text-white px-14 py-1 mt-1 bg-gray-900">
                     {playlists.map((data) => (
                         <option value={data.PlaylistName}>{data.PlaylistName}</option>
                     ))}
@@ -292,21 +295,25 @@ export default function PlayList(props) {
             ): null}
 
 
-            <div className="lg:mx-4 grid grid-cols-1 lg:grid-cols-2 pb-10 gap-2 sm:gap-0">
+            <div className="grid grid-cols-1 lg:grid-cols-2 pb-10 gap-2 sm:gap-0">
 
                 {search.length > 0 ? (
                         searchedItems.map((item) => {
                             return (
-                                <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))} className="bg-opacity-30 border border-white border-opacity-5 flex space-x-4 bg-gray-900 px-5 py-3 rounded-sm">
-                                    <div className="w-12">
-                                        <img alt="Thumbnail" src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/146301004/original/265af19662a8925f79d1e3d2daff3c5c8277ee3c/create-album-covers-and-song-covers-for-cheap.jpg" />
+                                <div className="flex justify-between items-center bg-opacity-30 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5">
+                                    <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))} className="space-x-1 sm:space-x-4 flex items-center">
+                                        <div className="w-10 sm:w-20">
+                                            <img alt="Thumbnail" src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/149562217/original/fc77d96de1229ad6ca6f83289fd2d4b4c068a568/make-album-and-song-covers.jpg" />
+                                        </div>
+                                        <div>
+                                            <p className="sm:pl-3 md:pr-5 text-xs sm:text-lg">{item.name}</p>
+                                        </div>
+                                    </button>
+                                    <div className="space-x-4 text-3xl mt-3">
+                                        <button onClick={() => passSongUrlToParent(item.PlaylistItem)}><IoIosPlay className="mt-3 text-2xl" /></button>
+                                        <button onClick={() => deleteFromFireBase(item.userId)}><IoIosRemoveCircleOutline className="text-2xl mt-3 text-red-500" /></button>                               
                                     </div>
-            
-                                    <p className="sm:pl-3 mt-3 font-bold text-xs sm:text-sm">{item.name}</p>
-
-                                    <button onClick={() => passSongUrlToParent(item.PlaylistItem)}><IoIosPlay className="mt-3 text-2xl" /></button>
-                                    <button onClick={() => deleteFromFireBase(item.userId)}><IoIosRemoveCircleOutline className="text-2xl mt-3 text-red-500" /></button>                               
-                                </button>
+                                </div>
                             )
                         })
                     ) : (
@@ -315,17 +322,20 @@ export default function PlayList(props) {
 
                             return(
 
-                                <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))} className="bg-opacity-30 border border-white border-opacity-5 space-x-1 sm:space-x-4 flex bg-gray-900 px-5 py-6 sm:py-3 rounded-sm">
-        
-                                    <div className="w-10 sm:w-12">
-                                        <img alt="Thumbnail" src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/146301004/original/265af19662a8925f79d1e3d2daff3c5c8277ee3c/create-album-covers-and-song-covers-for-cheap.jpg" />
+                                <div className="flex justify-between items-center bg-opacity-30 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5">
+                                    <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))} className="space-x-1 sm:space-x-4 flex items-center">                                 
+                                        <div className="w-10 sm:w-20">
+                                            <img alt="Thumbnail" src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/149562217/original/fc77d96de1229ad6ca6f83289fd2d4b4c068a568/make-album-and-song-covers.jpg" />
+                                        </div>
+                                        <div>
+                                            <p className="sm:pl-3 md:pr-5 text-xs sm:text-lg">{data.name}</p>
+                                        </div>
+                                    </button>
+                                    <div className="space-x-4 text-3xl mt-3">
+                                        <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay /></button>
+                                        <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-red-500" /></button>                                                
                                     </div>
-
-                                    <p className="sm:pl-3 mt-3 md:pr-5 font-bold text-xs sm:text-sm">{data.name}</p>
-                        
-                                    <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay className="mt-3 text-2xl" /></button>
-                                    <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-2xl mt-3 text-red-500" /></button>                                                
-                                </button>
+                                </div>
                             )
 
                         })

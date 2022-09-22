@@ -7,7 +7,7 @@ import { BsCodeSlash } from 'react-icons/bs'
 export default function About(){
 
     return(
-        <section className="py-16 bg-white">
+        <section className="py-24 bg-white">
             <div className="ml-4 sm:ml-20 md:ml-40 lg:ml-72 xl:flex">
                 <div className="text-gray-700 mt-20">
                     <span className="text-4xl font-bold">What's CodingMelody All About?</span>
@@ -32,8 +32,9 @@ export default function About(){
                         <a href="https://github.com/miikaran/codingmelody" className="sm:text-2xl bg-indigo-500 mr-24 sm:mr-0 py-3 rounded-sm px-6 font-bold text-white hover:bg-indigo-600 transition duration-200 flex">SOURCE <BsCodeSlash className="ml-2 mt-1" /></a>          
                     </div>
                 </div>
-                <img className="hidden md:block sm:max-w-sm md:max-w-md xl:max-w-lg mt-20 md:mt-12 lg:mt-12 xl:ml-28 rounded-md shadow-2xl shadow-indigo-800" src={DemoImg2} alt="Demo Image" />
+                <img className="hidden md:block sm:max-w-sm md:max-w-md xl:max-w-lg mt-20 md:mt-12 lg:mt-5 xl:ml-28 rounded-sm shadow-2xl shadow-indigo-800" src={DemoImg2} alt="Demo Image" />
             </div>
         </section>
+        
     )
 }

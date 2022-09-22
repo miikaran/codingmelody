@@ -9,6 +9,7 @@ module.exports = {
     },
     backgroundImage: {
       'mainpage': "url('../src/assets/mainpagebg.gif')",
+      'about': "url('../src/assets/wave (15).svg')"
     }
   },
   plugins: [],
