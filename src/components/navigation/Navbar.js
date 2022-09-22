@@ -16,7 +16,7 @@ export default function Navbar(){
             <div>
                 <div className="flex items-center justify-between py-3 lg:py-6 lg:block">
                     <Link className="block mb-5" to="/">
-                        <img className="w-48" src={Logo} />
+                        <img className="w-48" src={Logo} alt="Logo" />
                     </Link>
                     <div className="lg:hidden">
                         <button
