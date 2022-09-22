@@ -28,7 +28,7 @@ export default function About(){
                         </div>
                     </div>
                     <div className="mt-10 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">         
-                        <a className="sm:text-2xl bg-indigo-500 py-3 rounded-sm px-6 font-bold mr-24 sm:mr-0 text-white hover:bg-indigo-600 transition duration-200">SIGN UP NOW!</a>               
+                        <a href="/Signup" className="sm:text-2xl bg-indigo-500 py-3 rounded-sm px-6 font-bold mr-24 sm:mr-0 text-white hover:bg-indigo-600 transition duration-200">SIGN UP NOW!</a>               
                         <a href="https://github.com/miikaran/codingmelody" className="sm:text-2xl bg-indigo-500 mr-24 sm:mr-0 py-3 rounded-sm px-6 font-bold text-white hover:bg-indigo-600 transition duration-200 flex">SOURCE <BsCodeSlash className="ml-2 mt-1" /></a>          
                     </div>
                 </div>
