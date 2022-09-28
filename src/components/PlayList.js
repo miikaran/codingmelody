@@ -10,6 +10,7 @@ import { MdPlaylistAdd } from 'react-icons/md'
 import { AiOutlineClose } from 'react-icons/ai'
 import { GiLoveSong } from 'react-icons/gi'
 import { RiPlayListFill, RiPlayListAddLine } from 'react-icons/ri'
+import AddItems from '../assets/AddItems.svg'
 
 export default function PlayList(props) {
 
@@ -68,8 +69,6 @@ export default function PlayList(props) {
     };
 
 
-    /*HANDLE ADDING
-    PLAYLIST ITEMS*/
     const handleSubmit = (event) => { 
 
         event.preventDefault();
@@ -152,6 +151,8 @@ export default function PlayList(props) {
     }
 
 
+    /*CREATES NEW
+    PLAYLIST TO FIREBASE*/
     const writeNewPlaylistToFireBase = () => {
         
         set(ref(db, `${auth.currentUser.uid}/${playlistName}`), {
@@ -200,6 +201,8 @@ export default function PlayList(props) {
     }
 
 
+    /*FILTERS ALL THE
+    PLAYLISTS FROM CURRENT USER*/
     const filterPlaylist = (playlist) => {
 
         setPlaylistName(playlist)
@@ -218,45 +221,72 @@ export default function PlayList(props) {
         <div className="text-white bg-opacity-20 sm:px-12 space-y-7 mt-10">
 
             <div className="flex flex-col sm:flex-row justify-center mx-2 sm:mx-0 space-x-0 space-y-6 sm:space-y-0 sm:space-x-3">
-                <button onClick={() => setAddingItem(true)}className="flex text-white text-lg bg-indigo-500 bg-opacity-80 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
+                <button onClick={() => setAddingItem(true)}className="flex text-white bg-indigo-500 bg-opacity-80 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
                         ADD SONGS<GiLoveSong className="text-2xl mx-2" />           
                 </button>
-                <button onClick={() => setAddingPlaylist(true)}className="flex text-white text-lg bg-indigo-500 bg-opacity-80 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
+                <button onClick={() => setAddingPlaylist(true)}className="flex text-white bg-indigo-500 bg-opacity-80 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
                         CREATE PLAYLIST<RiPlayListAddLine className="text-2xl mx-2" />           
                 </button>
-                <input onChange={(e) => searchItems(e.target.value)} type="text" className="pl-3 pr-20 py-2 rounded-sm text-lg bg-gray-900 bg-opacity-60 border" placeholder="Search Your Songs..."/>                 
+                <input onChange={(e) => searchItems(e.target.value)} type="text" className="pl-3 pr-20 py-2 rounded-sm bg-gray-900 bg-opacity-60 border border-white border-opacity-20" placeholder="Search Your Songs..."/>                 
             </div>
 
 
             { addingItem ? (
 
-                <div className="flex justify-center items-center bg-black bg-opacity-70 fixed inset-0">
-                    <div className="bg-white">
-                        <button onClick={() => setAddingItem(false)} className="border p-2 w-8 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
-                        <form onSubmit={handleSubmit} className="md:space-x-2 rounded-sm pb-6 pt-4 px-5 space-y-3 sm:space-y-0 flex flex-col sm:flex-row">
-                            <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 pr-4 py-2 sm:py-0 rounded-sm bg-gray-900 bg-opacity-80" placeholder="Enter Name Here.."/>        
-                            <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 pr-4 py-2 sm:py-0 rounded-sm bg-gray-900 bg-opacity-80" placeholder="Enter Url Here.."/>
-                            
-                            <button type="submit" className="flex text-white md:mx-2 bg-indigo-500 px-4 py-3 rounded-sm font-bold hover:bg-indigo-600 transition duration-200">
-                                ADD ITEM<MdPlaylistAdd className="text-2xl mx-2" />           
-                            </button>
+                <div className="sm:flex justify-center items-center bg-black bg-opacity-70 fixed inset-0">
+                    <div className="bg-white bg-opacity-5 border border-white border-opacity-30 backdrop-blur-sm">                        
+                        <button onClick={() => setAddingItem(false)} className="border p-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>                                        
+                        <form onSubmit={handleSubmit} className="rounded-sm pb-8 px-12 mt-5 space-y-5 flex flex-col">
+                            <div className="flex space-x-4">
+                                <div>
+                                    <span className="text-xl sm:text-2xl font-bold">Add Items To Playlist</span>
+                                    <p>Customizable options available.</p>
+                                </div>    
+                                <img className="w-16 hidden sm:block" src={AddItems} />                   
+                            </div>
+                            <div className="flex flex-col space-y-2">
+                                <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>        
+                                <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Url Here.."/>
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-xs font-bold">Song Thumbnail <i className="text-red-400">(Not Necessary)</i></span>
+                                <input type="file" className="file:py-1 file:px-4 file:rounded-sm hover:file:cursor-pointer" />
+                            </div>               
+                            <hr />
+                            <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-3 sm:space-y-0">
+                                <button onClick={() => setAddingItem(false)} className="flex text-white bg-red-500 px-4 py-2 rounded-sm font-bold hover:bg-red-600 transition duration-200">
+                                    CANCEL           
+                                </button>
+                                <button type="submit" className="flex text-white bg-indigo-500 px-4 py-2 rounded-sm font-bold hover:bg-indigo-600 transition duration-200">
+                                    ADD ITEM<MdPlaylistAdd className="text-2xl mx-2" />           
+                                </button> 
+                            </div>                            
                         </form>
                     </div>
                 </div>
             ): null}
 
 
-
             { addingPlaylist ? (
 
-            <div className="flex justify-center items-center bg-black bg-opacity-70 fixed inset-0">
-                <div className="bg-white">
+            <div className="sm:flex justify-center items-center bg-black bg-opacity-70 fixed inset-0">
+                <div className="bg-white bg-opacity-5 border border-white border-opacity-30 backdrop-blur-sm">
                     <button onClick={() => setAddingPlaylist(false)} className="border p-2 w-8 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
-                    <form onSubmit={handlePlaylistSubmit} className="md:space-x-2 rounded-sm justify-center pb-6 pt-4 px-5 space-y-3 sm:space-y-0 flex flex-col sm:flex-row">
-                        <input onChange={handlePlaylistNameInputChange} value={playlistName} type="text" className="pl-3 pr-4 py-2 sm:py-0 rounded-sm bg-gray-900 bg-opacity-80" placeholder="Enter Name Here.."/>                       
-                        <button type="submit" className="flex text-white md:mx-2 bg-indigo-500 px-4 py-3 rounded-sm font-bold hover:bg-indigo-600 transition duration-200">
-                            CREATE PLAYLIST<MdPlaylistAdd className="text-2xl mx-2" />           
-                        </button>
+                    <form onSubmit={handlePlaylistSubmit} className="rounded-sm pb-9 pt-4 px-8 space-y-4 flex flex-col">
+                        <input onChange={handlePlaylistNameInputChange} value={playlistName} type="text" className="pl-3 pr-4 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>                       
+                        <div className="flex flex-col">
+                            <span className="text-xs font-bold">Playlist Thumbnail <i className="text-red-400">(Not Necessary)</i></span>
+                            <input type="file" className="file:py-1 file:px-4 file:rounded-sm hover:file:cursor-pointer" />
+                        </div>
+                        <hr />
+                        <div className="flex space-x-2">
+                            <button onClick={() => setAddingPlaylist(false)} className="flex text-white bg-red-500 px-4 py-3 rounded-sm font-bold hover:bg-red-600 transition duration-200">
+                                CANCEL           
+                            </button>
+                            <button type="submit" className="flex text-white md:mx-2 bg-indigo-500 px-4 py-3 rounded-sm font-bold hover:bg-indigo-600 transition duration-200">
+                                CREATE PLAYLIST<MdPlaylistAdd className="text-2xl mx-2" />           
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -281,7 +311,7 @@ export default function PlayList(props) {
 
             
             <div>
-                <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border font-medium rounded-sm text-white px-2 py-1 mt-1 bg-gray-900">
+                <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border border-white border-opacity-20 font-medium rounded-sm text-white px-2 py-1 mt-1 bg-gray-900">
                     {playlists.map((data) => (
                         <option value={data.PlaylistName}>{data.PlaylistName}</option>
                     ))}
