@@ -12,7 +12,7 @@ export default function Cards(){
                 <br />You just gotta <b>create an account</b>, <b>add music to your list</b> & <b>start vibing</b>.
                 </p>
                 <div className="mt-8 text-2xl font-bold text-white">
-                    <a href="/" className="bg-rose-400 py-3 px-20">DEMO</a>
+                    <a href="/" className="bg-rose-400 py-3 px-20 hover:bg-rose-500 transition duration-200">DEMO</a>
                 </div>
             </div> 
         </section>

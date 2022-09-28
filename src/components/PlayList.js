@@ -203,7 +203,6 @@ export default function PlayList(props) {
     const filterPlaylist = (playlist) => {
 
         setPlaylistName(playlist)
-
         onValue(ref(db, `/${auth.currentUser.uid}/${playlist}`), snapshot => {
             setItems([])
             const data = snapshot.val()
@@ -231,17 +230,18 @@ export default function PlayList(props) {
 
             { addingItem ? (
 
-                <div className="flex flex-col justify-center lg:mx-32 bg-gray-900 px-7 py-6 border">
-                    <button onClick={() => setAddingItem(false)} className="border py-2 sm:py-1 w-8 px-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
-                    <span className="text-2xl font-bold">ADDING SONGS</span>
-                    <form onSubmit={handleSubmit} className="md:space-x-2 rounded-sm py-2 space-y-3 sm:space-y-0 flex flex-col sm:flex-row">
-                        <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 pr-4 py-2 sm:py-0 rounded-sm bg-gray-900 bg-opacity-60 border" placeholder="Enter Name Here.."/>        
-                        <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 pr-4 border py-2 sm:py-0 rounded-sm bg-gray-900 bg-opacity-60" placeholder="Enter Url Here.."/>
-                        
-                        <button type="submit" className="flex text-white md:mx-2 bg-indigo-400 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
-                            ADD ITEM<MdPlaylistAdd className="text-2xl mx-2" />           
-                        </button>
-                    </form>
+                <div className="flex justify-center items-center bg-black bg-opacity-70 fixed inset-0">
+                    <div className="bg-white">
+                        <button onClick={() => setAddingItem(false)} className="border p-2 w-8 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
+                        <form onSubmit={handleSubmit} className="md:space-x-2 rounded-sm pb-6 pt-4 px-5 space-y-3 sm:space-y-0 flex flex-col sm:flex-row">
+                            <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 pr-4 py-2 sm:py-0 rounded-sm bg-gray-900 bg-opacity-80" placeholder="Enter Name Here.."/>        
+                            <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 pr-4 py-2 sm:py-0 rounded-sm bg-gray-900 bg-opacity-80" placeholder="Enter Url Here.."/>
+                            
+                            <button type="submit" className="flex text-white md:mx-2 bg-indigo-500 px-4 py-3 rounded-sm font-bold hover:bg-indigo-600 transition duration-200">
+                                ADD ITEM<MdPlaylistAdd className="text-2xl mx-2" />           
+                            </button>
+                        </form>
+                    </div>
                 </div>
             ): null}
 
@@ -249,15 +249,16 @@ export default function PlayList(props) {
 
             { addingPlaylist ? (
 
-            <div className="flex flex-col justify-center lg:mx-60 bg-gray-900 px-7 py-6 border">
-                <button onClick={() => setAddingPlaylist(false)} className="border py-2 sm:py-1 w-8 px-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
-                <span className="text-2xl font-bold text-center">CREATE PLAYLIST</span>
-                <form onSubmit={handlePlaylistSubmit} className="md:space-x-2 rounded-sm justify-center py-2 space-y-3 sm:space-y-0 flex flex-col sm:flex-row">
-                    <input onChange={handlePlaylistNameInputChange} value={playlistName} type="text" className="pl-3 pr-4 py-2 sm:py-0 rounded-sm bg-gray-900 bg-opacity-60 border" placeholder="Enter Name Here.."/>                       
-                    <button type="submit" className="flex text-white md:mx-2 bg-indigo-400 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
-                        CREATE PLAYLIST<MdPlaylistAdd className="text-2xl mx-2" />           
-                    </button>
-                </form>
+            <div className="flex justify-center items-center bg-black bg-opacity-70 fixed inset-0">
+                <div className="bg-white">
+                    <button onClick={() => setAddingPlaylist(false)} className="border p-2 w-8 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
+                    <form onSubmit={handlePlaylistSubmit} className="md:space-x-2 rounded-sm justify-center pb-6 pt-4 px-5 space-y-3 sm:space-y-0 flex flex-col sm:flex-row">
+                        <input onChange={handlePlaylistNameInputChange} value={playlistName} type="text" className="pl-3 pr-4 py-2 sm:py-0 rounded-sm bg-gray-900 bg-opacity-80" placeholder="Enter Name Here.."/>                       
+                        <button type="submit" className="flex text-white md:mx-2 bg-indigo-500 px-4 py-3 rounded-sm font-bold hover:bg-indigo-600 transition duration-200">
+                            CREATE PLAYLIST<MdPlaylistAdd className="text-2xl mx-2" />           
+                        </button>
+                    </form>
+                </div>
             </div>
             ): null}
 
@@ -280,7 +281,7 @@ export default function PlayList(props) {
 
             
             <div>
-                <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border font-medium rounded-sm text-white px-14 py-1 mt-1 bg-gray-900">
+                <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border font-medium rounded-sm text-white px-2 py-1 mt-1 bg-gray-900">
                     {playlists.map((data) => (
                         <option value={data.PlaylistName}>{data.PlaylistName}</option>
                     ))}
