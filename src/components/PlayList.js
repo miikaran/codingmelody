@@ -13,7 +13,7 @@ import { RiPlayListFill, RiPlayListAddLine } from 'react-icons/ri'
 import AddItems from '../assets/AddItems.svg'
 
 export default function PlayList(props) {
-
+    
     const [url, setUrl] = useState('');
     const [name, setName] = useState('');
     const [error, setError] = useState('');
@@ -29,7 +29,7 @@ export default function PlayList(props) {
     const [deleted, setDeleted] = useState('');
     const [noMatches, setNoMatches] = useState(false);
     const [playlists, setPlaylists] = useState([]);
-
+    const [itemThumbnail, setItemThumbnail] = useState('');
     
     /*READS USERS PLAYLIST
     DATA FROM FIREBASE*/
@@ -59,14 +59,16 @@ export default function PlayList(props) {
     const handleUrlInputChange = (event) => {
         setUrl(event.target.value);
     };
-
     const handleNameInputChange = (event) => {
         setName(event.target.value);
     };
-
     const handlePlaylistNameInputChange = (event) => {
         setPlaylistName(event.target.value);
-    };
+    };   
+    const handleItemThumbnailChange = (event) => {
+        const [file] = event.target.files
+        setItemThumbnail(URL.createObjectURL(file));
+    }
 
 
     const handleSubmit = (event) => { 
@@ -75,10 +77,15 @@ export default function PlayList(props) {
         if (!url || !validator.isURL(url) || !name){   
             displayErrorOnAdding();
         }
+        else if(itemThumbnail == ''){
+            setItemThumbnail('https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/149562217/original/fc77d96de1229ad6ca6f83289fd2d4b4c068a568/make-album-and-song-covers.jpg')
+        }
         else{
             writeToFireBase();
             setUrl('');
             setName('');
+            setItemThumbnail('https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/149562217/original/fc77d96de1229ad6ca6f83289fd2d4b4c068a568/make-album-and-song-covers.jpg')
+            setAddingItem(false)
         }
     };
 
@@ -88,6 +95,7 @@ export default function PlayList(props) {
         event.preventDefault();
         if (playlistName !== ''){
             writeNewPlaylistToFireBase();
+            setAddingPlaylist(false)
         }
         else{
             displayErrorOnAdding();
@@ -98,7 +106,7 @@ export default function PlayList(props) {
     const itemAddedSuccessfully = () => {
 
         if(itemAdded){
-            setSuccessfull('Item Added To Playlist')     
+            setSuccessfull('Item Added')     
             setTimeout(() =>{
                 setSuccessfull(null)
             }, 2000)            
@@ -112,7 +120,7 @@ export default function PlayList(props) {
     const itemDeletedSuccessfully = () => {
 
         if(itemDeleted){
-            setDeleted(`${name} Deleted Successfully From Playlist.`)     
+            setDeleted(`${name} Deleted Successfully`)     
             setTimeout(() =>{
                 setDeleted(null)
             }, 2000)            
@@ -145,6 +153,7 @@ export default function PlayList(props) {
         set(ref(db, `${auth.currentUser.uid}/${playlistName}/${userId}`), {
             PlaylistItem: url, name,
             userId: userId,
+            ItemThumbnail: itemThumbnail
         })
         setItemAdded(true);
         itemAddedSuccessfully();
@@ -167,7 +176,7 @@ export default function PlayList(props) {
     ITEMS FROM FIREBASE*/ 
     const deleteFromFireBase = (uid) => {
 
-        remove(ref(db, `${auth.currentUser.uid}/${uid}`))
+        remove(ref(db, `${auth.currentUser.uid}/${playlistName}/${uid}`))
         .catch((err) => {
             alert(err.message)
         })
@@ -250,7 +259,7 @@ export default function PlayList(props) {
                             </div>
                             <div className="flex flex-col">
                                 <span className="text-xs font-bold">Song Thumbnail <i className="text-red-400">(Not Necessary)</i></span>
-                                <input type="file" className="file:py-1 file:px-4 file:rounded-sm hover:file:cursor-pointer" />
+                                <input onChange={handleItemThumbnailChange} type="file" className="file:py-1 file:border file:bg-sky-100 file:px-4 file:rounded-md hover:file:cursor-pointer" />
                             </div>               
                             <hr />
                             <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-3 sm:space-y-0">
@@ -273,7 +282,14 @@ export default function PlayList(props) {
                 <div className="bg-white bg-opacity-5 border border-white border-opacity-30 backdrop-blur-sm">
                     <button onClick={() => setAddingPlaylist(false)} className="border p-2 w-8 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
                     <form onSubmit={handlePlaylistSubmit} className="rounded-sm pb-9 pt-4 px-8 space-y-4 flex flex-col">
-                        <input onChange={handlePlaylistNameInputChange} value={playlistName} type="text" className="pl-3 pr-4 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>                       
+                        <div className="flex space-x-4">
+                            <div>
+                                <span className="text-xl sm:text-2xl font-bold">Create New Playlists</span>
+                                <p>Filter Your Favourite Songs</p>
+                            </div>    
+                            <img className="w-16 hidden sm:block" src={AddItems} />                   
+                        </div>                    
+                        <input onChange={handlePlaylistNameInputChange} type="text" className="pl-3 pr-4 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>                       
                         <div className="flex flex-col">
                             <span className="text-xs font-bold">Playlist Thumbnail <i className="text-red-400">(Not Necessary)</i></span>
                             <input type="file" className="file:py-1 file:px-4 file:rounded-sm hover:file:cursor-pointer" />
@@ -295,14 +311,14 @@ export default function PlayList(props) {
 
 
             {itemAdded ? (
-                    <div className="ml-20">
+                    <div>
                         <p className="text-green-300 font-bold mx-1">{successfull}</p>
                     </div>
             ): null}
              
 
             {itemDeleted ? (
-                <div className="ml-4 sm:ml-20">
+                <div>
                     <p className="text-red-500 font-bold mx-1">{deleted}</p>
                 </div>
             ): null}
@@ -356,15 +372,15 @@ export default function PlayList(props) {
                                 <div className="flex justify-between items-center bg-opacity-30 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5">
                                     <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))} className="space-x-1 sm:space-x-4 flex items-center">                                 
                                         <div className="w-10 sm:w-20">
-                                            <img alt="Thumbnail" src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/149562217/original/fc77d96de1229ad6ca6f83289fd2d4b4c068a568/make-album-and-song-covers.jpg" />
+                                            <img alt="Thumbnail" src={data.ItemThumbnail} />
                                         </div>
                                         <div>
                                             <p className="sm:pl-3 md:pr-5 text-xs sm:text-lg">{data.name}</p>
                                         </div>
                                     </button>
                                     <div className="space-x-4 text-3xl mt-3">
-                                        <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay /></button>
-                                        <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-red-500" /></button>                                                
+                                        <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay className="hover:text-gray-400 transition duration-200" /></button>
+                                        <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-red-500 hover:text-red-700 transition duration-200" /></button>                                                
                                     </div>
                                 </div>
                             )

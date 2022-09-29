@@ -28,9 +28,9 @@ export default function MusicPlayer(){
                 <div className="bg-gray-900 bg-opacity-30">
                     <div>
                         {playList ? (
-                            <div className="rounded-sm test sm:px-0 h-96">
+                            <div className="rounded-sm player sm:px-0 h-96">
                                 <ReactPlayer
-                                    wrapper='test'
+                                    wrapper='player'
                                     loop = 'true'
                                     url={url}
                                     controls={controls}
@@ -39,9 +39,9 @@ export default function MusicPlayer(){
                                 />
                             </div>    
                         ): 
-                        <div className="rounded-sm test sm:px-0 h-96">
+                        <div className="rounded-sm player sm:px-0 h-96">
                             <ReactPlayer
-                                wrapper='test'
+                                wrapper='player'
                                 loop = 'true'
                                 url='https://www.youtube.com/watch?v=jfKfPfyJRdk'
                                 controls={controls}
