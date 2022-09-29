@@ -9,7 +9,7 @@ import { IoIosPlay, IoIosRemoveCircleOutline } from 'react-icons/io'
 import { MdPlaylistAdd } from 'react-icons/md'
 import { AiOutlineClose } from 'react-icons/ai'
 import { GiLoveSong } from 'react-icons/gi'
-import { RiPlayListFill, RiPlayListAddLine } from 'react-icons/ri'
+import { RiPlayListFill, RiPlayListAddLine, RiWindowsFill } from 'react-icons/ri'
 import AddItems from '../assets/AddItems.svg'
 
 export default function PlayList(props) {
@@ -29,14 +29,14 @@ export default function PlayList(props) {
     const [deleted, setDeleted] = useState('');
     const [noMatches, setNoMatches] = useState(false);
     const [playlists, setPlaylists] = useState([]);
-    const [itemThumbnail, setItemThumbnail] = useState('');
+    const [choosePlaylist, setChoosePlaylist] = useState(false);
     
     /*READS USERS PLAYLIST
     DATA FROM FIREBASE*/
     useEffect(() =>{
         auth.onAuthStateChanged((user) => {         
             if(user){
-                //onValue listens for events/changes & updates them.
+                //onValue listens for events/changes & updates them.              
                 onValue(ref(db, `/${auth.currentUser.uid}/${playlistName}`), snapshot => {
                     setItems([])
                     setPlaylists([])
@@ -48,9 +48,6 @@ export default function PlayList(props) {
                         })
                     }
                 })
-            }
-            else{
-                return null
             }
         })
     }, [])
@@ -65,10 +62,6 @@ export default function PlayList(props) {
     const handlePlaylistNameInputChange = (event) => {
         setPlaylistName(event.target.value);
     };   
-    const handleItemThumbnailChange = (event) => {
-        const [file] = event.target.files
-        setItemThumbnail(URL.createObjectURL(file));
-    }
 
 
     const handleSubmit = (event) => { 
@@ -77,14 +70,10 @@ export default function PlayList(props) {
         if (!url || !validator.isURL(url) || !name){   
             displayErrorOnAdding();
         }
-        else if(itemThumbnail == ''){
-            setItemThumbnail('https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/149562217/original/fc77d96de1229ad6ca6f83289fd2d4b4c068a568/make-album-and-song-covers.jpg')
-        }
         else{
             writeToFireBase();
             setUrl('');
             setName('');
-            setItemThumbnail('https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/149562217/original/fc77d96de1229ad6ca6f83289fd2d4b4c068a568/make-album-and-song-covers.jpg')
             setAddingItem(false)
         }
     };
@@ -105,29 +94,19 @@ export default function PlayList(props) {
 
     const itemAddedSuccessfully = () => {
 
-        if(itemAdded){
-            setSuccessfull('Item Added')     
-            setTimeout(() =>{
-                setSuccessfull(null)
-            }, 2000)            
-        }
-        else{
-            return null
-        }
+        setSuccessfull('Item Added')     
+        setTimeout(() =>{
+            setSuccessfull(null)
+        }, 2000)            
     }
 
 
     const itemDeletedSuccessfully = () => {
 
-        if(itemDeleted){
-            setDeleted(`${name} Deleted Successfully`)     
-            setTimeout(() =>{
-                setDeleted(null)
-            }, 2000)            
-        }
-        else{
-            return null
-        }
+        setDeleted(`${name} Deleted Successfully`)     
+        setTimeout(() =>{
+            setDeleted(null)
+        }, 2000)            
     }
 
 
@@ -153,10 +132,10 @@ export default function PlayList(props) {
         set(ref(db, `${auth.currentUser.uid}/${playlistName}/${userId}`), {
             PlaylistItem: url, name,
             userId: userId,
-            ItemThumbnail: itemThumbnail
         })
         setItemAdded(true);
         itemAddedSuccessfully();
+        filterPlaylist(playlistName);
     }
 
 
@@ -168,7 +147,7 @@ export default function PlayList(props) {
             PlaylistName: playlistName,
         })
         setItemAdded(true);
-        itemAddedSuccessfully();
+        filterPlaylist(playlistName)
     }
 
 
@@ -181,7 +160,8 @@ export default function PlayList(props) {
             alert(err.message)
         })
         setItemDeleted(true);
-        itemDeletedSuccessfully();  
+        itemDeletedSuccessfully();
+        filterPlaylist(playlistName)
     }
 
 
@@ -214,6 +194,8 @@ export default function PlayList(props) {
     PLAYLISTS FROM CURRENT USER*/
     const filterPlaylist = (playlist) => {
 
+        setChoosePlaylist(true)
+        props.choose(true)
         setPlaylistName(playlist)
         onValue(ref(db, `/${auth.currentUser.uid}/${playlist}`), snapshot => {
             setItems([])
@@ -225,171 +207,188 @@ export default function PlayList(props) {
     }
 
 
+
     return(
 
-        <div className="text-white bg-opacity-20 sm:px-12 space-y-7 mt-10">
+        <div className="text-white sm:px-12 mt-10">
 
-            <div className="flex flex-col sm:flex-row justify-center mx-2 sm:mx-0 space-x-0 space-y-6 sm:space-y-0 sm:space-x-3">
-                <button onClick={() => setAddingItem(true)}className="flex text-white bg-indigo-500 bg-opacity-80 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
-                        ADD SONGS<GiLoveSong className="text-2xl mx-2" />           
-                </button>
-                <button onClick={() => setAddingPlaylist(true)}className="flex text-white bg-indigo-500 bg-opacity-80 px-4 py-3 rounded-sm font-bold hover:bg-indigo-500 transition duration-200">
-                        CREATE PLAYLIST<RiPlayListAddLine className="text-2xl mx-2" />           
-                </button>
-                <input onChange={(e) => searchItems(e.target.value)} type="text" className="pl-3 pr-20 py-2 rounded-sm bg-gray-900 bg-opacity-60 border border-white border-opacity-20" placeholder="Search Your Songs..."/>                 
-            </div>
-
-
-            { addingItem ? (
-
-                <div className="sm:flex justify-center items-center bg-black bg-opacity-70 fixed inset-0">
-                    <div className="bg-white bg-opacity-5 border border-white border-opacity-30 backdrop-blur-sm">                        
-                        <button onClick={() => setAddingItem(false)} className="border p-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>                                        
-                        <form onSubmit={handleSubmit} className="rounded-sm pb-8 px-12 mt-5 space-y-5 flex flex-col">
-                            <div className="flex space-x-4">
-                                <div>
-                                    <span className="text-xl sm:text-2xl font-bold">Add Items To Playlist</span>
-                                    <p>Customizable options available.</p>
-                                </div>    
-                                <img className="w-16 hidden sm:block" src={AddItems} />                   
-                            </div>
-                            <div className="flex flex-col space-y-2">
-                                <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>        
-                                <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Url Here.."/>
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-xs font-bold">Song Thumbnail <i className="text-red-400">(Not Necessary)</i></span>
-                                <input onChange={handleItemThumbnailChange} type="file" className="file:py-1 file:border file:bg-sky-100 file:px-4 file:rounded-md hover:file:cursor-pointer" />
-                            </div>               
-                            <hr />
-                            <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-3 sm:space-y-0">
-                                <button onClick={() => setAddingItem(false)} className="flex text-white bg-red-500 px-4 py-2 rounded-sm font-bold hover:bg-red-600 transition duration-200">
-                                    CANCEL           
-                                </button>
-                                <button type="submit" className="flex text-white bg-indigo-500 px-4 py-2 rounded-sm font-bold hover:bg-indigo-600 transition duration-200">
-                                    ADD ITEM<MdPlaylistAdd className="text-2xl mx-2" />           
-                                </button> 
-                            </div>                            
-                        </form>
-                    </div>
-                </div>
-            ): null}
-
-
-            { addingPlaylist ? (
-
-            <div className="sm:flex justify-center items-center bg-black bg-opacity-70 fixed inset-0">
-                <div className="bg-white bg-opacity-5 border border-white border-opacity-30 backdrop-blur-sm">
-                    <button onClick={() => setAddingPlaylist(false)} className="border p-2 w-8 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
-                    <form onSubmit={handlePlaylistSubmit} className="rounded-sm pb-9 pt-4 px-8 space-y-4 flex flex-col">
-                        <div className="flex space-x-4">
-                            <div>
-                                <span className="text-xl sm:text-2xl font-bold">Create New Playlists</span>
-                                <p>Filter Your Favourite Songs</p>
-                            </div>    
-                            <img className="w-16 hidden sm:block" src={AddItems} />                   
-                        </div>                    
-                        <input onChange={handlePlaylistNameInputChange} type="text" className="pl-3 pr-4 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>                       
-                        <div className="flex flex-col">
-                            <span className="text-xs font-bold">Playlist Thumbnail <i className="text-red-400">(Not Necessary)</i></span>
-                            <input type="file" className="file:py-1 file:px-4 file:rounded-sm hover:file:cursor-pointer" />
-                        </div>
-                        <hr />
-                        <div className="flex space-x-2">
-                            <button onClick={() => setAddingPlaylist(false)} className="flex text-white bg-red-500 px-4 py-3 rounded-sm font-bold hover:bg-red-600 transition duration-200">
-                                CANCEL           
-                            </button>
-                            <button type="submit" className="flex text-white md:mx-2 bg-indigo-500 px-4 py-3 rounded-sm font-bold hover:bg-indigo-600 transition duration-200">
-                                CREATE PLAYLIST<MdPlaylistAdd className="text-2xl mx-2" />           
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            ): null}
-
-
-
-            {itemAdded ? (
-                    <div>
-                        <p className="text-green-300 font-bold mx-1">{successfull}</p>
-                    </div>
-            ): null}
-             
-
-            {itemDeleted ? (
+            {!choosePlaylist ? (
                 <div>
-                    <p className="text-red-500 font-bold mx-1">{deleted}</p>
+                    <select onChange={(e) => filterPlaylist(e.target.value)} className="text-2xl border border-white border-opacity-20 font-medium rounded-sm text-white px-2 py-1 mt-1 bg-gray-900">
+                        <option>Choose Playlist</option>
+                        {playlists.map((data) => (
+                            <option value={data.PlaylistName}>{data.PlaylistName}</option>
+                        ))}
+                    </select>
                 </div>
             ): null}
 
-            <div className="block text-red-400 mx-1 font-bold">{error}</div>
-
+            {choosePlaylist ? (
             
-            <div>
-                <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border border-white border-opacity-20 font-medium rounded-sm text-white px-2 py-1 mt-1 bg-gray-900">
-                    {playlists.map((data) => (
-                        <option value={data.PlaylistName}>{data.PlaylistName}</option>
-                    ))}
-                </select>
-            </div>
+                <div className="space-y-4">
+
+                    <div className="flex flex-col sm:flex-row justify-center mx-2 sm:mx-0 space-x-0 space-y-6 sm:space-y-0 sm:space-x-3">
+                        <button onClick={() => setAddingItem(true)}className="flex text-white bg-indigo-700 px-4 py-3 rounded-sm font-bold hover:bg-indigo-800 transition duration-200">
+                                ADD SONGS<GiLoveSong className="text-2xl mx-2" />           
+                        </button>
+                        <button onClick={() => setAddingPlaylist(true)}className="flex text-white bg-indigo-700  px-4 py-3 rounded-sm font-bold hover:bg-indigo-800 transition duration-200">
+                                CREATE PLAYLIST<RiPlayListAddLine className="text-2xl mx-2" />           
+                        </button>
+                        <input onChange={(e) => searchItems(e.target.value)} type="text" className="pl-3 pr-20 py-2 rounded-sm bg-gray-900 bg-opacity-70 backdrop-blur-sm border border-white border-opacity-20" placeholder="Search Your Songs..."/>                 
+                    </div>
 
 
-            {noMatches ? (
-                <div>
-                    Nothing here
+                    { addingItem ? (
+
+                        <div className="sm:flex justify-center items-center bg-black bg-opacity-70 fixed inset-0 z-50">
+                            <div className="bg-white bg-opacity-5 border border-white border-opacity-30 backdrop-blur-sm">                        
+                                <button onClick={() => setAddingItem(false)} className="border p-2 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>                                        
+                                <form onSubmit={handleSubmit} className="rounded-sm pb-8 px-12 mt-5 space-y-5 flex flex-col">
+                                    <div className="flex space-x-4">
+                                        <div>
+                                            <span className="text-xl sm:text-2xl font-bold">Add Items To Playlist</span>
+                                            <p>Customizable options available.</p>
+                                        </div>    
+                                        <img className="w-16 hidden sm:block" src={AddItems} />                   
+                                    </div>
+                                    <div className="flex flex-col space-y-2">
+                                        <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>        
+                                        <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Url Here.."/>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-xs font-bold">Song Thumbnail <i className="text-red-400">(Not Necessary)</i></span>
+                                        <input type="file" className="file:py-1 file:border file:bg-sky-100 file:px-4 file:rounded-md hover:file:cursor-pointer" />
+                                    </div>               
+                                    <hr />
+                                    <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-3 sm:space-y-0">
+                                        <button onClick={() => setAddingItem(false)} className="flex text-white bg-red-500 px-4 py-2 rounded-sm font-bold hover:bg-red-600 transition duration-200">
+                                            CANCEL           
+                                        </button>
+                                        <button type="submit" className="flex text-white bg-indigo-500 px-4 py-2 rounded-sm font-bold hover:bg-indigo-600 transition duration-200">
+                                            ADD ITEM<MdPlaylistAdd className="text-2xl mx-2" />           
+                                        </button> 
+                                    </div>                            
+                                </form>
+                            </div>
+                        </div>
+                    ): null}
+
+
+                    { addingPlaylist ? (
+
+                    <div className="sm:flex justify-center items-center bg-black bg-opacity-70 fixed inset-0 z-50">
+                        <div className="bg-white bg-opacity-5 border border-white border-opacity-30 backdrop-blur-sm">
+                            <button onClick={() => setAddingPlaylist(false)} className="border p-2 w-8 border-red-500 bg-red-500"><AiOutlineClose className="text-xs" /></button>
+                            <form onSubmit={handlePlaylistSubmit} className="rounded-sm pb-9 pt-4 px-8 space-y-4 flex flex-col">
+                                <div className="flex space-x-4">
+                                    <div>
+                                        <span className="text-xl sm:text-2xl font-bold">Create New Playlists</span>
+                                        <p>Filter Your Favourite Songs</p>
+                                    </div>    
+                                    <img className="w-16 hidden sm:block" src={AddItems} />                   
+                                </div>                    
+                                <input onChange={handlePlaylistNameInputChange} type="text" className="pl-3 pr-4 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>                       
+                                <div className="flex flex-col">
+                                    <span className="text-xs font-bold">Playlist Thumbnail <i className="text-red-400">(Not Necessary)</i></span>
+                                    <input type="file" className="file:py-1 file:px-4 file:rounded-sm hover:file:cursor-pointer" />
+                                </div>
+                                <hr />
+                                <div className="flex space-x-2">
+                                    <button onClick={() => setAddingPlaylist(false)} className="flex text-white bg-red-500 px-4 py-3 rounded-sm font-bold hover:bg-red-600 transition duration-200">
+                                        CANCEL           
+                                    </button>
+                                    <button type="submit" className="flex text-white md:mx-2 bg-indigo-500 px-4 py-3 rounded-sm font-bold hover:bg-indigo-600 transition duration-200">
+                                        CREATE PLAYLIST<MdPlaylistAdd className="text-2xl mx-2" />           
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    ): null}
+
+
+
+                    {itemAdded ? (
+                            <div>
+                                <p className="text-green-300 font-bold mx-1">{successfull}</p>
+                            </div>
+                    ): null}
+                    
+
+                    {itemDeleted ? (
+                        <div>
+                            <p className="text-red-500 font-bold mx-1">{deleted}</p>
+                        </div>
+                    ): null}
+
+                    <div className="block text-red-400 mx-1 font-bold">{error}</div>
+
+                    
+                    <div>
+                        <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border border-white border-opacity-20 font-medium rounded-sm text-white px-2 py-1 mt-1 bg-gray-900">
+                            <option>Change Playlist</option>
+                            {playlists.map((data) => (
+                                <option value={data.PlaylistName}>{data.PlaylistName}</option>
+                            ))}
+                        </select>
+                    </div>
+
+
+                    {noMatches ? (
+                        <div>
+                            Nothing here
+                        </div>
+                    ): null}
+
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 pb-10 gap-2 sm:gap-0">
+
+                        {search.length > 0 ? (
+                                searchedItems.map((item) => {
+                                    return (
+                                        <div className="flex justify-between items-center bg-opacity-30 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5">                              
+                                            <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))} className="space-x-1 sm:space-x-4 flex items-center">
+                                                <div className="w-10 sm:w-20">
+                                                    <img alt="Thumbnail" src="https://media.istockphoto.com/vectors/music-cloud-concept-cloud-shape-sound-waves-and-headphones-online-vector-id1282891289?k=20&m=1282891289&s=612x612&w=0&h=iYkzTbn4eatQ9LT42yu7eHzoh9pgxL_vnH_h9NfZ6BM=" />
+                                                </div>
+                                                <div>
+                                                    <p className="sm:pl-3 md:pr-5 text-xs sm:text-lg">{item.name}</p>
+                                                </div>
+                                            </button>
+                                            <div className="space-x-4 text-3xl mt-3">
+                                                <button onClick={() => passSongUrlToParent(item.PlaylistItem)}><IoIosPlay className="mt-3 text-2xl" /></button>
+                                                <button onClick={() => deleteFromFireBase(item.userId)}><IoIosRemoveCircleOutline className="text-2xl mt-3 text-red-500" /></button>                               
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            ) : (
+
+                                items.map(data => {
+
+                                    return(
+
+                                        <div className="flex justify-between items-center bg-opacity-20 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5 backdrop-blur-xl">               
+                                            <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))} className="space-x-1 sm:space-x-4 flex items-center">                                 
+                                                <div className="w-10 sm:w-14">
+                                                    <img alt="Thumbnail" src='https://media.istockphoto.com/vectors/music-cloud-concept-cloud-shape-sound-waves-and-headphones-online-vector-id1282891289?k=20&m=1282891289&s=612x612&w=0&h=iYkzTbn4eatQ9LT42yu7eHzoh9pgxL_vnH_h9NfZ6BM=' />
+                                                </div>
+                                                <div>
+                                                    <p className="sm:pl-3 md:pr-5 text-xs sm:text-lg">{data.name}</p>
+                                                </div>
+                                            </button>
+                                            <div className="space-x-4 text-3xl mt-3">
+                                                <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay className="hover:text-gray-400 transition duration-200" /></button>
+                                                <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-red-500 hover:text-red-700 transition duration-200" /></button>                                                
+                                            </div>
+                                        </div>
+                                    )
+
+                                })
+                            )}
+                    </div>
                 </div>
             ): null}
-
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 pb-10 gap-2 sm:gap-0">
-
-                {search.length > 0 ? (
-                        searchedItems.map((item) => {
-                            return (
-                                <div className="flex justify-between items-center bg-opacity-30 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5">
-                                    <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))} className="space-x-1 sm:space-x-4 flex items-center">
-                                        <div className="w-10 sm:w-20">
-                                            <img alt="Thumbnail" src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/149562217/original/fc77d96de1229ad6ca6f83289fd2d4b4c068a568/make-album-and-song-covers.jpg" />
-                                        </div>
-                                        <div>
-                                            <p className="sm:pl-3 md:pr-5 text-xs sm:text-lg">{item.name}</p>
-                                        </div>
-                                    </button>
-                                    <div className="space-x-4 text-3xl mt-3">
-                                        <button onClick={() => passSongUrlToParent(item.PlaylistItem)}><IoIosPlay className="mt-3 text-2xl" /></button>
-                                        <button onClick={() => deleteFromFireBase(item.userId)}><IoIosRemoveCircleOutline className="text-2xl mt-3 text-red-500" /></button>                               
-                                    </div>
-                                </div>
-                            )
-                        })
-                    ) : (
-
-                        items.map(data => {
-
-                            return(
-
-                                <div className="flex justify-between items-center bg-opacity-30 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5">
-                                    <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))} className="space-x-1 sm:space-x-4 flex items-center">                                 
-                                        <div className="w-10 sm:w-20">
-                                            <img alt="Thumbnail" src={data.ItemThumbnail} />
-                                        </div>
-                                        <div>
-                                            <p className="sm:pl-3 md:pr-5 text-xs sm:text-lg">{data.name}</p>
-                                        </div>
-                                    </button>
-                                    <div className="space-x-4 text-3xl mt-3">
-                                        <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay className="hover:text-gray-400 transition duration-200" /></button>
-                                        <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-red-500 hover:text-red-700 transition duration-200" /></button>                                                
-                                    </div>
-                                </div>
-                            )
-
-                        })
-                    )}
-
-            </div>
-
         </div>
             
     )

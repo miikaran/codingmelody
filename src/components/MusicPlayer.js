@@ -12,6 +12,7 @@ export default function MusicPlayer(){
 
     // PLAYLIST MUSIC //
     const [playList, setPlayList] = useState(false);
+    const [choose, setChoose] = useState(false);
 
     const PlayListMusic = (url) => {
         setUrl(url)
@@ -20,38 +21,42 @@ export default function MusicPlayer(){
         setPlayList(true);
     }
 
+    const choosePlaylists = (choose) => {
+        setChoose(choose)
+    }
+
 
     return(
 
         <div className="flex justify-center py-40 bg-mainpage bg-cover">   
-            <div className="xl:backdrop-blur-sm">
-                <div className="bg-gray-900 bg-opacity-30">
-                    <div>
-                        {playList ? (
-                            <div className="rounded-sm player sm:px-0 h-96">
-                                <ReactPlayer
-                                    wrapper='player'
-                                    loop = 'true'
-                                    url={url}
-                                    controls={controls}
-                                    playing={playing}
-                                    onEnded={(e) => setPlaying(false)}
-                                />
-                            </div>    
-                        ): 
-                        <div className="rounded-sm player sm:px-0 h-96">
+            <div>
+                <div className="bg-black bg-opacity-30">
+                    {playList ? (     
+                        <div className="rounded-sm test sm:px-0 h-96">
                             <ReactPlayer
                                 wrapper='player'
                                 loop = 'true'
-                                url='https://www.youtube.com/watch?v=jfKfPfyJRdk'
+                                url={url}
                                 controls={controls}
+                                playing={playing}
+                                onEnded={(e) => setPlaying(false)}
                             />
-                        </div>    
-                    }                                 
-                    </div> 
-                    <PlayList url={PlayListMusic}/>
-                </div>
-            </div>     
+                        </div>
+                    ): null}
+
+                    {choose ? (
+                        <div className="rounded-sm player sm:px-0 h-96">
+                        <ReactPlayer
+                            wrapper='player'
+                            loop = 'true'
+                            url='https://www.youtube.com/watch?v=jfKfPfyJRdk'
+                            controls={controls}
+                        />
+                        </div>
+                    ): null}                                 
+                </div> 
+                <PlayList url={PlayListMusic} choose={choosePlaylists}/>
+            </div>   
         </div>
 
     )
