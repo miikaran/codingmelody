@@ -10,6 +10,7 @@ import { MdPlaylistAdd } from 'react-icons/md'
 import { AiOutlineClose } from 'react-icons/ai'
 import { GiLoveSong } from 'react-icons/gi'
 import { RiPlayListFill, RiPlayListAddLine, RiWindowsFill } from 'react-icons/ri'
+import { FiMoreVertical } from 'react-icons/fi'
 import AddItems from '../assets/AddItems.svg'
 
 export default function PlayList(props) {
@@ -30,6 +31,7 @@ export default function PlayList(props) {
     const [noMatches, setNoMatches] = useState(false);
     const [playlists, setPlaylists] = useState([]);
     const [choosePlaylist, setChoosePlaylist] = useState(false);
+    const [deletePlaylist, setDeletePlaylist] = useState(false);
     
     /*READS USERS PLAYLIST
     DATA FROM FIREBASE*/
@@ -210,22 +212,28 @@ export default function PlayList(props) {
 
     return(
 
-        <div className="text-white sm:px-12 mt-10">
+        <div className="text-white mt-6">
 
             {!choosePlaylist ? (
-                <div>
-                    <select onChange={(e) => filterPlaylist(e.target.value)} className="text-2xl border border-white border-opacity-20 font-medium rounded-sm text-white px-2 py-1 mt-1 bg-gray-900">
-                        <option>Choose Playlist</option>
-                        {playlists.map((data) => (
-                            <option value={data.PlaylistName}>{data.PlaylistName}</option>
-                        ))}
-                    </select>
+                <div className="flex flex-col justify-center pl-4 sm:pl-0 sm:items-center bg-black bg-opacity-90 fixed inset-0 z-50 space-y-5">
+                    <div className="max-w-lg">
+                        <span className="sm:text-xl"><span className="text-5xl font-bold">Hello!👋</span> <br /> Get started by choosing your playlist. <br /> don't worry, you can change it later.</span>
+                        <br /><br />
+                        <hr className="border-2 hidden sm:block" />
+
+                        <select onChange={(e) => filterPlaylist(e.target.value)} className="text-xl sm:text-2xl border border-white border-opacity-5 text-white px-6 sm:px-14 py-6 bg-black bg-opacity-40 backdrop-blur-sm hover:bg-opacity-60 hover:backdrop-blur-lg transition duration-200">
+                            <option className="bg-gray-900">CHOOSE PLAYLIST</option>
+                            {playlists.map((data) => (
+                                <option className="bg-gray-900 font-light" value={data.PlaylistName}>{data.PlaylistName}</option>
+                            ))}
+                        </select>  
+                    </div>      
                 </div>
             ): null}
 
             {choosePlaylist ? (
             
-                <div className="space-y-4">
+                <div className="space-y-6">
 
                     <div className="flex flex-col sm:flex-row justify-center mx-2 sm:mx-0 space-x-0 space-y-6 sm:space-y-0 sm:space-x-3">
                         <button onClick={() => setAddingItem(true)}className="flex text-white bg-indigo-700 px-4 py-3 rounded-sm font-bold hover:bg-indigo-800 transition duration-200">
@@ -234,8 +242,18 @@ export default function PlayList(props) {
                         <button onClick={() => setAddingPlaylist(true)}className="flex text-white bg-indigo-700  px-4 py-3 rounded-sm font-bold hover:bg-indigo-800 transition duration-200">
                                 CREATE PLAYLIST<RiPlayListAddLine className="text-2xl mx-2" />           
                         </button>
-                        <input onChange={(e) => searchItems(e.target.value)} type="text" className="pl-3 pr-20 py-2 rounded-sm bg-gray-900 bg-opacity-70 backdrop-blur-sm border border-white border-opacity-20" placeholder="Search Your Songs..."/>                 
+                        <input onChange={(e) => searchItems(e.target.value)} type="text" className="pl-3 pr-20 py-2 rounded-sm bg-gray-900 bg-opacity-70 backdrop-blur-sm border border-white border-opacity-20" placeholder="Search Your Songs..."/>                                
                     </div>
+
+                    <div className="flex flex-col sm:flex-row sm:space-x-10 mx-2 sm:mx-0">
+                        <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border border-white border-opacity-20 font-medium rounded-sm text-white px-2 py-1 bg-gray-900">
+                            <option>Change Playlist</option>
+                            {playlists.map((data) => (
+                                <option value={data.PlaylistName}>{data.PlaylistName}</option>
+                            ))}
+                        </select>
+                        <p className="mt-4 sm:mt-1 text-lg sm:text-xl font-bold">Current Playlist | <i className="font-medium">{playlistName}</i></p>
+                    </div>  
 
 
                     { addingItem ? (
@@ -322,17 +340,6 @@ export default function PlayList(props) {
                     ): null}
 
                     <div className="block text-red-400 mx-1 font-bold">{error}</div>
-
-                    
-                    <div>
-                        <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border border-white border-opacity-20 font-medium rounded-sm text-white px-2 py-1 mt-1 bg-gray-900">
-                            <option>Change Playlist</option>
-                            {playlists.map((data) => (
-                                <option value={data.PlaylistName}>{data.PlaylistName}</option>
-                            ))}
-                        </select>
-                    </div>
-
 
                     {noMatches ? (
                         <div>
