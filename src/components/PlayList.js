@@ -221,17 +221,18 @@ export default function PlayList(props) {
         <div className="text-white mt-6">
 
             {!choosePlaylist ? (
-                <div className="flex flex-col justify-center pl-4 sm:pl-0 sm:items-center bg-black bg-opacity-90 fixed inset-0 z-50 space-y-5">
-                    <div className="max-w-lg">
-                        <span className="sm:text-xl"><span className="text-5xl font-bold">Hello!👋</span> <br /> Get started by choosing your playlist. <br /> don't worry, you can change it later.</span>
+                <div className="flex flex-col justify-center pl-4 sm:pl-0 sm:items-center bg-black bg-opacity-60 fixed inset-0 z-50">
+                    <div className="max-w-3xl sm:p-14 rounded-sm">
+                        <span className="sm:text-2xl"><span className="text-6xl font-bold">Hello!👋</span> <br />Start by choosing your playlist. Don't worry, you can change it later. And If you're new, just choose the Default option.</span>
                         <br /><br />
-                        <hr className="border-2 hidden sm:block" />
-
+                        <hr className="border w-52 hidden sm:block" />
+                        <hr className="border w-32 mt-4 hidden sm:block" />
+                        <br />
                         <div className="flex flex-col">
-                            <select onChange={(e) => filterPlaylist(e.target.value)} className="text-xl sm:text-2xl border border-white border-opacity-50 sm:border-opacity-5 text-white px-6 sm:px-14 py-6 bg-black bg-opacity-40 backdrop-blur-sm hover:bg-opacity-60 hover:backdrop-blur-lg transition duration-200">
-                                <option className="bg-gray-900">CHOOSE PLAYLIST...</option>
-                                {playlists.map((data) => (
-                                    <option className="bg-gray-900 font-light" value={data.PlaylistName}>{data.PlaylistName}</option>
+                            <select onChange={(e) => filterPlaylist(e.target.value)} className="text-xl bg-[url('https://i1.wp.com/mynaijadj.com/wp-content/uploads/2021/03/music-playlist.jpg?fit=1200%2C627&ssl=1')] bg-cover sm:text-3xl rounded-md border-2 border-white border-opacity-30 text-white sm:px-14 py-6">
+                                <option className="bg-gray-900"></option>
+                                {playlists.map((data) => (             
+                                    <option className="bg-gray-900 font-light" value={data.PlaylistName}>{data.PlaylistName}</option>                     
                                 ))}
                                 {playlists.length == 0 ?(
                                     <option className="bg-gray-900 font-light" value="Default">Default</option>
