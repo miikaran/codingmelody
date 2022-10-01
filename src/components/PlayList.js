@@ -37,12 +37,7 @@ export default function PlayList(props) {
     DATA FROM FIREBASE*/
     useEffect(() =>{
         auth.onAuthStateChanged((user) => {         
-            if(user){     
-                if(playlists.length == 0){
-                    set(ref(db, `${auth.currentUser.uid}/Default`), {
-                        PlaylistName: 'Default',
-                    })
-                }     
+            if(user){ 
                 //onValue listens for events/changes & updates them.              
                 onValue(ref(db, `/${auth.currentUser.uid}/${playlistName}`), snapshot => {
                     setItems([])
@@ -51,7 +46,7 @@ export default function PlayList(props) {
                     if(data !== null){
                         Object.values(data).map((items) => {
                             setPlaylists((playlists) => [...playlists, items])
-                            setItems((oldArray) => [...oldArray, items])    
+                            setItems((oldArray) => [...oldArray, items])
                         })
                     }
                 })
@@ -59,7 +54,7 @@ export default function PlayList(props) {
         })
     }, [])
 
-    
+ 
     const handleUrlInputChange = (event) => {
         setUrl(event.target.value);
     };
@@ -196,11 +191,18 @@ export default function PlayList(props) {
         }
     }
 
-
+    
     /*FILTERS ALL THE
     PLAYLISTS FROM CURRENT USER*/
     const filterPlaylist = (playlist) => {
 
+        /*CREATE A DEFAULT 
+        PLAYLIST FOR NEW USERS*/
+        if(playlists.length == 0){
+            set(ref(db, `${auth.currentUser.uid}/${playlist}`), {
+                PlaylistName: playlist,
+            })
+        }
         setChoosePlaylist(true)
         props.choose(true)
         setPlaylistName(playlist)
@@ -208,7 +210,7 @@ export default function PlayList(props) {
             setItems([])
             const data = snapshot.val()
             Object.values(data).map((items) => {
-                setItems((oldArray) => [...oldArray, items])             
+                setItems((oldArray) => [...oldArray, items])         
             })   
         })
     }
@@ -231,6 +233,9 @@ export default function PlayList(props) {
                                 {playlists.map((data) => (
                                     <option className="bg-gray-900 font-light" value={data.PlaylistName}>{data.PlaylistName}</option>
                                 ))}
+                                {playlists.length == 0 ?(
+                                    <option className="bg-gray-900 font-light" value="Default">Default</option>
+                                ): null}                              
                             </select>
                         </div>
                     </div>      
@@ -311,7 +316,7 @@ export default function PlayList(props) {
                                     </div>    
                                     <img className="w-16 hidden sm:block" src={AddItems} />                   
                                 </div>                    
-                                <input onChange={handlePlaylistNameInputChange} type="text" className="pl-3 pr-4 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>                       
+                                <input onBlur={handlePlaylistNameInputChange} type="text" className="pl-3 pr-4 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>                       
                                 <div className="flex flex-col">
                                     <span className="text-xs font-bold">Playlist Thumbnail <i className="text-red-400">(Not Necessary)</i></span>
                                     <input type="file" className="file:py-1 file:px-4 file:rounded-sm hover:file:cursor-pointer" />
@@ -361,7 +366,7 @@ export default function PlayList(props) {
                                     return (
                                         <div className="flex justify-between items-center bg-opacity-30 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5">                              
                                             <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))} className="space-x-1 sm:space-x-4 flex items-center">
-                                                <div className="w-10 sm:w-20">
+                                                <div className="w-10 sm:w-14">
                                                     <img alt="Thumbnail" src="https://media.istockphoto.com/vectors/music-cloud-concept-cloud-shape-sound-waves-and-headphones-online-vector-id1282891289?k=20&m=1282891289&s=612x612&w=0&h=iYkzTbn4eatQ9LT42yu7eHzoh9pgxL_vnH_h9NfZ6BM=" />
                                                 </div>
                                                 <div>
@@ -369,8 +374,8 @@ export default function PlayList(props) {
                                                 </div>
                                             </button>
                                             <div className="space-x-4 text-3xl mt-3">
-                                                <button onClick={() => passSongUrlToParent(item.PlaylistItem)}><IoIosPlay className="mt-3 text-2xl" /></button>
-                                                <button onClick={() => deleteFromFireBase(item.userId)}><IoIosRemoveCircleOutline className="text-2xl mt-3 text-red-500" /></button>                               
+                                                <button onClick={() => passSongUrlToParent(item.PlaylistItem)}><IoIosPlay className="hover:text-gray-400 transition duration-200" /></button>
+                                                <button onClick={() => deleteFromFireBase(item.userId)}><IoIosRemoveCircleOutline className="text-red-500 hover:text-red-700 transition duration-200" /></button>                               
                                             </div>
                                         </div>
                                     )
