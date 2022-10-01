@@ -45,7 +45,7 @@ export default function MusicPlayer(){
                             </div>
                         ): null}
 
-                        {choose ? (
+                        {choose && !playList ? (
                             <div className="rounded-sm player sm:px-0 h-96">
                             <ReactPlayer
                                 wrapper='player'

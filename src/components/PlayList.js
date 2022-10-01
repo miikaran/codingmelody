@@ -37,7 +37,12 @@ export default function PlayList(props) {
     DATA FROM FIREBASE*/
     useEffect(() =>{
         auth.onAuthStateChanged((user) => {         
-            if(user){
+            if(user){     
+                if(playlists.length == 0){
+                    set(ref(db, `${auth.currentUser.uid}/Default`), {
+                        PlaylistName: 'Default',
+                    })
+                }     
                 //onValue listens for events/changes & updates them.              
                 onValue(ref(db, `/${auth.currentUser.uid}/${playlistName}`), snapshot => {
                     setItems([])
@@ -46,7 +51,7 @@ export default function PlayList(props) {
                     if(data !== null){
                         Object.values(data).map((items) => {
                             setPlaylists((playlists) => [...playlists, items])
-                            setItems((oldArray) => [...oldArray, items])             
+                            setItems((oldArray) => [...oldArray, items])    
                         })
                     }
                 })
@@ -69,7 +74,7 @@ export default function PlayList(props) {
     const handleSubmit = (event) => { 
 
         event.preventDefault();
-        if (!url || !validator.isURL(url) || !name){   
+        if (!url || !validator.isURL(url) || !name) {   
             displayErrorOnAdding();
         }
         else{
@@ -144,7 +149,7 @@ export default function PlayList(props) {
     /*CREATES NEW
     PLAYLIST TO FIREBASE*/
     const writeNewPlaylistToFireBase = () => {
-        
+
         set(ref(db, `${auth.currentUser.uid}/${playlistName}`), {
             PlaylistName: playlistName,
         })
@@ -209,7 +214,6 @@ export default function PlayList(props) {
     }
 
 
-
     return(
 
         <div className="text-white mt-6">
@@ -221,12 +225,14 @@ export default function PlayList(props) {
                         <br /><br />
                         <hr className="border-2 hidden sm:block" />
 
-                        <select onChange={(e) => filterPlaylist(e.target.value)} className="text-xl sm:text-2xl border border-white border-opacity-5 text-white px-6 sm:px-14 py-6 bg-black bg-opacity-40 backdrop-blur-sm hover:bg-opacity-60 hover:backdrop-blur-lg transition duration-200">
-                            <option className="bg-gray-900">CHOOSE PLAYLIST</option>
-                            {playlists.map((data) => (
-                                <option className="bg-gray-900 font-light" value={data.PlaylistName}>{data.PlaylistName}</option>
-                            ))}
-                        </select>  
+                        <div className="flex flex-col">
+                            <select onChange={(e) => filterPlaylist(e.target.value)} className="text-xl sm:text-2xl border border-white border-opacity-50 sm:border-opacity-5 text-white px-6 sm:px-14 py-6 bg-black bg-opacity-40 backdrop-blur-sm hover:bg-opacity-60 hover:backdrop-blur-lg transition duration-200">
+                                <option className="bg-gray-900">CHOOSE PLAYLIST...</option>
+                                {playlists.map((data) => (
+                                    <option className="bg-gray-900 font-light" value={data.PlaylistName}>{data.PlaylistName}</option>
+                                ))}
+                            </select>
+                        </div>
                     </div>      
                 </div>
             ): null}
