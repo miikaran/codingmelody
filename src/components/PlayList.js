@@ -10,6 +10,7 @@ import { MdPlaylistAdd } from 'react-icons/md'
 import { AiOutlineClose } from 'react-icons/ai'
 import { GiLoveSong } from 'react-icons/gi'
 import { RiPlayListAddLine} from 'react-icons/ri'
+import { BsThreeDotsVertical, BsFillTrashFill } from 'react-icons/bs'
 import AddItems from '../assets/AddItems.svg'
 
 export default function PlayList(props) {
@@ -32,6 +33,7 @@ export default function PlayList(props) {
     const [playlists, setPlaylists] = useState([]);
     const [choosePlaylist, setChoosePlaylist] = useState(false);
     const [deletePlaylist, setDeletePlaylist] = useState(false);
+    const [moreOptions, setMoreOptions] = useState(false);
     
     /*READS USERS PLAYLIST
     DATA FROM FIREBASE*/
@@ -69,9 +71,6 @@ export default function PlayList(props) {
         setThumbnail(event.target.value);
     };     
 
-    const defaultThumbnail = (url) => {
-        setThumbnail(url);
-    }
 
     const handleSubmit = (event) => { 
 
@@ -142,6 +141,7 @@ export default function PlayList(props) {
         set(ref(db, `${auth.currentUser.uid}/${playlistName}/${userId}`), {
             PlaylistItem: url, name,
             Thumbnail: thumbnail,
+            Boolean: true,
             userId: userId,
         })
         setItemAdded(true);
@@ -170,10 +170,24 @@ export default function PlayList(props) {
         .catch((err) => {
             alert(err.message)
         })
-        setItemDeleted(true);
-        itemDeletedSuccessfully();
+        setItemDeleted(true)
+        itemDeletedSuccessfully()
         filterPlaylist(playlistName)
     }
+
+
+    /*DELETE PLAYLIST 
+    FROM FIREBASE*/ 
+    const deletePlaylistFromFireBase = (playlist) => {
+
+        remove(ref(db, `${auth.currentUser.uid}/${playlist}`))
+        .catch((err) => {
+            alert(err.message)
+        })
+        setPlaylistName('')
+        setDeletePlaylist(false)
+    }
+
 
 
 
@@ -266,14 +280,31 @@ export default function PlayList(props) {
                         <input onChange={(e) => searchItems(e.target.value)} type="text" className="pl-3 pr-20 py-2 rounded-sm bg-gray-900 bg-opacity-70 backdrop-blur-sm border border-white border-opacity-20" placeholder="Search Your Songs..."/>                                
                     </div>
 
-                    <div className="flex flex-col sm:flex-row sm:space-x-10 mx-2 sm:mx-0">
+                    <div className="flex flex-col sm:flex-row sm:space-x-5 space-y-4 sm:space-y-0 mx-2 sm:mx-0">
                         <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border border-white border-opacity-20 font-medium rounded-sm text-white px-2 py-1 bg-gray-900">
                             <option>Change Playlist</option>
                             {playlists.map((data) => (
                                 <option value={data.PlaylistName}>{data.PlaylistName}</option>
                             ))}
                         </select>
-                        <p className="mt-4 sm:mt-1 text-lg sm:text-xl font-bold">Current Playlist | <i className="font-medium">{playlistName}</i></p>
+                        <p className="text-lg sm:text-xl font-bold">Current Playlist | <i className="font-medium">{playlistName}</i></p>
+
+                        <button onClick={() => {setDeletePlaylist(true)}} className="flex text-white bg-red-500 px-4 py-2 rounded-sm font-bold hover:bg-red-600 transition duration-200">
+                            DELETE PLAYLIST <BsFillTrashFill className="text-lg mt-1 ml-2" />      
+                        </button>
+
+                        { deletePlaylist ? (
+                            <div className="sm:flex justify-center items-center bg-black bg-opacity-70 fixed inset-0 z-50">
+                                <div className="flex flex-col bg-white bg-opacity-5 border border-gray-500 backdrop-blur-sm px-8 max-w-lg text-center py-6 space-y-5">
+                                    <span className="text-2xl">Are you sure you want delete playlist <i className="font-bold underline">{playlistName}</i>?</span> 
+                                    <div className="flex justify-center space-x-3">                      
+                                        <button onClick={() => {setDeletePlaylist(false)}}  className="py-2 px-8 text-sm sm:text-xl bg-red-500 font-bold hover:bg-red-600 transition duration-200">NO! I'M NOT</button>
+                                        <button onClick={() => {deletePlaylistFromFireBase(playlistName)}}  className="text-white text-sm sm:text-xl bg-indigo-700 px-8 py-3 rounded-sm font-bold hover:bg-indigo-800 transition duration-200">YESSIR!</button>
+                                    </div>                                          
+                                </div>
+                            </div>
+                        ): null}
+
                     </div>  
 
 
@@ -368,17 +399,25 @@ export default function PlayList(props) {
                         {search.length > 0 ? (
                                 searchedItems.map((item) => {
                                     return (
-                                        <div className="flex justify-between items-center bg-opacity-20 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5 backdrop-blur-xl">                              
-                                            <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))} className="space-x-1 sm:space-x-4 flex items-center">                                          
-                                                <img className="w-12 sm:w-24" alt="Thumbnail" src={item.Thumbnail !== '' ? (item.Thumbnail): <p>y</p>} />                                                              
-                                                <div>
-                                                    <p className="sm:pl-3 md:pr-5 text-xs sm:text-lg">{item.name}</p>
+                                        <div>
+                                            {item.PlaylistItem ? (
+                                                <div className="flex justify-between items-center bg-opacity-20 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5 backdrop-blur-xl">                              
+                                                    <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))} className="space-x-1 sm:space-x-4 flex items-center">                                          
+                                                        <img className="w-12 sm:w-24" alt="Thumbnail" src={item.Thumbnail !== '' ? (item.Thumbnail): <p>y</p>} />                                                              
+                                                        <div>
+                                                            <p className="sm:pl-3 md:pr-5 text-xs sm:text-lg">{item.name}</p>
+                                                        </div>
+                                                    </button>
+                                                    <div className="space-x-4 text-3xl mt-3">
+                                                        <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))}><IoIosPlay className="hover:text-gray-400 transition duration-200" /></button>
+                                                        <button onClick={() => setMoreOptions(toggle => !toggle)}> {moreOptions ? (<AiOutlineClose className="hover:text-gray-300 transition duration-200" />):<BsThreeDotsVertical className="hover:text-gray-300 transition duration-200" /> }</button>
+                                                        
+                                                        {moreOptions ? (
+                                                                <button onClick={() => deleteFromFireBase(item.userId)}><IoIosRemoveCircleOutline className="text-red-500 hover:text-red-700 transition duration-200" /></button>                                           
+                                                        ): null}
+                                                    </div>
                                                 </div>
-                                            </button>
-                                            <div className="space-x-4 text-3xl mt-3">
-                                                <button onClick={() => passSongUrlToParent(item.PlaylistItem)}><IoIosPlay className="hover:text-gray-400 transition duration-200" /></button>
-                                                <button onClick={() => deleteFromFireBase(item.userId)}><IoIosRemoveCircleOutline className="text-red-500 hover:text-red-700 transition duration-200" /></button>                               
-                                            </div>
+                                            ): null}
                                         </div>
                                     )
                                 })
@@ -398,9 +437,14 @@ export default function PlayList(props) {
                                                         </div>
                                                     </button>
                                             
-                                                    <div className="space-x-4 text-2xl sm:text-3xl mt-3">
+                                                    <div className="space-x-4 text-xl sm:text-3xl mt-3">
                                                         <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay className="hover:text-gray-400 transition duration-200" /></button>
-                                                        <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-red-500 hover:text-red-700 transition duration-200" /></button>                                                
+                                                        <button onClick={() => setMoreOptions(toggle => !toggle)}> {moreOptions ? (<AiOutlineClose className="hover:text-gray-300 transition duration-200" />):<BsThreeDotsVertical className="hover:text-gray-300 transition duration-200" /> }</button>
+                                                        
+                                                        {moreOptions ? (
+                                                                <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-red-500 hover:text-red-700 transition duration-200" /></button>                                           
+                                                        ): null}
+                                                        
                                                     </div>
                                                 </div>
                                             ): null}
