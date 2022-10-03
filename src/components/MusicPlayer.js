@@ -28,12 +28,12 @@ export default function MusicPlayer(){
 
     return(
 
-        <div className="flex justify-center sm:items-center py-36 sm:py-28 bg-mainpage bg-cover h-screen"> 
+        <div className="flex justify-center sm:items-center py-36 sm:py-28 bg-mainpage bg-cover"> 
             <div>
                 <div className="sm:backdrop-blur-sm">
-                    <div className="bg-black bg-opacity-30 ">
+                    <div className="bg-black bg-opacity-30">
                         {playList ? (     
-                            <div className="rounded-sm player sm:px-0 h-96">
+                            <div className="player sm:px-0 h-96">
                                 <ReactPlayer
                                     wrapper='player'
                                     loop = 'true'

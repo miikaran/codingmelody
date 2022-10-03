@@ -9,14 +9,14 @@ import { IoIosPlay, IoIosRemoveCircleOutline } from 'react-icons/io'
 import { MdPlaylistAdd } from 'react-icons/md'
 import { AiOutlineClose } from 'react-icons/ai'
 import { GiLoveSong } from 'react-icons/gi'
-import { RiPlayListFill, RiPlayListAddLine, RiWindowsFill } from 'react-icons/ri'
-import { FiMoreVertical } from 'react-icons/fi'
+import { RiPlayListAddLine} from 'react-icons/ri'
 import AddItems from '../assets/AddItems.svg'
 
 export default function PlayList(props) {
     
     const [url, setUrl] = useState('');
     const [name, setName] = useState('');
+    const [thumbnail, setThumbnail] = useState('')
     const [error, setError] = useState('');
     const [items, setItems] = useState([]);
     const [search, setSearch] = useState('');
@@ -47,6 +47,7 @@ export default function PlayList(props) {
                         Object.values(data).map((items) => {
                             setPlaylists((playlists) => [...playlists, items])
                             setItems((oldArray) => [...oldArray, items])
+                           
                         })
                     }
                 })
@@ -63,8 +64,14 @@ export default function PlayList(props) {
     };
     const handlePlaylistNameInputChange = (event) => {
         setPlaylistName(event.target.value);
-    };   
+    }; 
+    const handleThumbnailInputChange = (event) => {
+        setThumbnail(event.target.value);
+    };     
 
+    const defaultThumbnail = (url) => {
+        setThumbnail(url);
+    }
 
     const handleSubmit = (event) => { 
 
@@ -76,6 +83,7 @@ export default function PlayList(props) {
             writeToFireBase();
             setUrl('');
             setName('');
+            setThumbnail('');
             setAddingItem(false)
         }
     };
@@ -133,6 +141,7 @@ export default function PlayList(props) {
         const userId = uid();
         set(ref(db, `${auth.currentUser.uid}/${playlistName}/${userId}`), {
             PlaylistItem: url, name,
+            Thumbnail: thumbnail,
             userId: userId,
         })
         setItemAdded(true);
@@ -218,10 +227,10 @@ export default function PlayList(props) {
 
     return(
 
-        <div className="text-white mt-6">
+        <div className="text-white bg-black bg-opacity-40">
 
             {!choosePlaylist ? (
-                <div className="flex flex-col justify-center pl-4 sm:pl-0 sm:items-center bg-black bg-opacity-60 fixed inset-0 z-50">
+                <div className="flex flex-col justify-center pl-4 sm:pl-0 sm:items-center bg-black bg-opacity-90 fixed inset-0 z-50">
                     <div className="max-w-3xl sm:p-14 rounded-sm">
                         <span className="sm:text-2xl"><span className="text-6xl font-bold">Hello!👋</span> <br />Start by choosing your playlist. Don't worry, you can change it later. And If you're new, just choose the Default option.</span>
                         <br /><br />
@@ -245,7 +254,7 @@ export default function PlayList(props) {
 
             {choosePlaylist ? (
             
-                <div className="space-y-6">
+                <div className="space-y-6 px-0 sm:px-12 pt-6 backdrop-blur-md">
 
                     <div className="flex flex-col sm:flex-row justify-center mx-2 sm:mx-0 space-x-0 space-y-6 sm:space-y-0 sm:space-x-3">
                         <button onClick={() => setAddingItem(true)}className="flex text-white bg-indigo-700 px-4 py-3 rounded-sm font-bold hover:bg-indigo-800 transition duration-200">
@@ -284,11 +293,9 @@ export default function PlayList(props) {
                                     <div className="flex flex-col space-y-2">
                                         <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>        
                                         <input onChange={handleUrlInputChange} value={url} type="text" className="pl-3 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Url Here.."/>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <span className="text-xs font-bold">Song Thumbnail <i className="text-red-400">(Not Necessary)</i></span>
-                                        <input type="file" className="file:py-1 file:border file:bg-sky-100 file:px-4 file:rounded-md hover:file:cursor-pointer" />
-                                    </div>               
+                                        <span className="font-bold text-xs">Thumbnail <i>(Not necessary)</i></span>
+                                        <input onChange={handleThumbnailInputChange} value={thumbnail} type="text" className="pl-3 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Thumbnail URL.."/>
+                                    </div>             
                                     <hr />
                                     <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-3 sm:space-y-0">
                                         <button onClick={() => setAddingItem(false)} className="flex text-white bg-red-500 px-4 py-2 rounded-sm font-bold hover:bg-red-600 transition duration-200">
@@ -318,10 +325,6 @@ export default function PlayList(props) {
                                     <img className="w-16 hidden sm:block" src={AddItems} />                   
                                 </div>                    
                                 <input onBlur={handlePlaylistNameInputChange} type="text" className="pl-3 pr-4 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>                       
-                                <div className="flex flex-col">
-                                    <span className="text-xs font-bold">Playlist Thumbnail <i className="text-red-400">(Not Necessary)</i></span>
-                                    <input type="file" className="file:py-1 file:px-4 file:rounded-sm hover:file:cursor-pointer" />
-                                </div>
                                 <hr />
                                 <div className="flex space-x-2">
                                     <button onClick={() => setAddingPlaylist(false)} className="flex text-white bg-red-500 px-4 py-3 rounded-sm font-bold hover:bg-red-600 transition duration-200">
@@ -360,16 +363,14 @@ export default function PlayList(props) {
                     ): null}
 
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 pb-10 gap-2 sm:gap-0">
+                    <div className="grid grid-cols-1 pb-10 gap-2 sm:gap-0">
 
                         {search.length > 0 ? (
                                 searchedItems.map((item) => {
                                     return (
-                                        <div className="flex justify-between items-center bg-opacity-30 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5">                              
-                                            <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))} className="space-x-1 sm:space-x-4 flex items-center">
-                                                <div className="w-10 sm:w-14">
-                                                    <img alt="Thumbnail" src="https://media.istockphoto.com/vectors/music-cloud-concept-cloud-shape-sound-waves-and-headphones-online-vector-id1282891289?k=20&m=1282891289&s=612x612&w=0&h=iYkzTbn4eatQ9LT42yu7eHzoh9pgxL_vnH_h9NfZ6BM=" />
-                                                </div>
+                                        <div className="flex justify-between items-center bg-opacity-20 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5 backdrop-blur-xl">                              
+                                            <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))} className="space-x-1 sm:space-x-4 flex items-center">                                          
+                                                <img className="w-12 sm:w-24" alt="Thumbnail" src={item.Thumbnail !== '' ? (item.Thumbnail): <p>y</p>} />                                                              
                                                 <div>
                                                     <p className="sm:pl-3 md:pr-5 text-xs sm:text-lg">{item.name}</p>
                                                 </div>
@@ -385,24 +386,26 @@ export default function PlayList(props) {
 
                                 items.map(data => {
 
-                                    return(
+                                    return (
+                                        <div>
+                                            {data.PlaylistItem ? (
+                                                <div className="flex justify-between items-center bg-opacity-20 border border-white border-opacity-5 bg-gray-900 pr-5 backdrop-blur-xl">               
 
-                                        <div className="flex justify-between items-center bg-opacity-20 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5 backdrop-blur-xl">               
-                                            <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))} className="space-x-1 sm:space-x-4 flex items-center">                                 
-                                                <div className="w-10 sm:w-14">
-                                                    <img alt="Thumbnail" src='https://media.istockphoto.com/vectors/music-cloud-concept-cloud-shape-sound-waves-and-headphones-online-vector-id1282891289?k=20&m=1282891289&s=612x612&w=0&h=iYkzTbn4eatQ9LT42yu7eHzoh9pgxL_vnH_h9NfZ6BM=' />
+                                                    <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))} className="flex items-center">                                                                                    
+                                                        <img className="w-12 sm:w-24" alt="Thumbnail" src={data.Thumbnail}/>                                                   
+                                                        <div>
+                                                            <p className="pl-2 sm:pl-6 md:pr-9 text-xs sm:text-lg">{data.name}</p>
+                                                        </div>
+                                                    </button>
+                                            
+                                                    <div className="space-x-4 text-2xl sm:text-3xl mt-3">
+                                                        <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay className="hover:text-gray-400 transition duration-200" /></button>
+                                                        <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-red-500 hover:text-red-700 transition duration-200" /></button>                                                
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p className="sm:pl-3 md:pr-5 text-xs sm:text-lg">{data.name}</p>
-                                                </div>
-                                            </button>
-                                            <div className="space-x-4 text-3xl mt-3">
-                                                <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))}><IoIosPlay className="hover:text-gray-400 transition duration-200" /></button>
-                                                <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-red-500 hover:text-red-700 transition duration-200" /></button>                                                
-                                            </div>
+                                            ): null}
                                         </div>
                                     )
-
                                 })
                             )}
                     </div>
