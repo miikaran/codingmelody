@@ -254,7 +254,7 @@ export default function PlayList(props) {
 
             {choosePlaylist ? (
             
-                <div className="space-y-6 px-0 sm:px-12 pt-6 backdrop-blur-md">
+                <div className="space-y-6 px-0 sm:px-12 pt-6">
 
                     <div className="flex flex-col sm:flex-row justify-center mx-2 sm:mx-0 space-x-0 space-y-6 sm:space-y-0 sm:space-x-3">
                         <button onClick={() => setAddingItem(true)}className="flex text-white bg-indigo-700 px-4 py-3 rounded-sm font-bold hover:bg-indigo-800 transition duration-200">
