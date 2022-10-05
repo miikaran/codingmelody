@@ -6,12 +6,12 @@ export default function Features(){
         
         <section className="flex justify-center bg-gray-100 py-12">
             <div className="text-center">
-                <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 text-xl xl:text-2xl font-bold text-gray-700 flex gap-10 md:gap-20 xl:gap-52">
+                <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 text-xl xl:text-2xl font-medium text-gray-700 flex gap-10 md:gap-20 xl:gap-48">
                     <li>
-                    NO LIMITS!
+                    Unlimited
                     <br />
                     <span className="font-normal text-sm">
-                    No song limits
+                    No song/playlist limits
                     </span>
                     </li>
                     <li>
@@ -22,14 +22,14 @@ export default function Features(){
                     </span>
                     </li>
                     <li>
-                    TOTALLY FREE!
+                    Totally free
                     <br />
                     <span className="font-normal text-sm ">
                     No payment info needed
                     </span>
                     </li>
                     <li>
-                    RESPONSIVE
+                    Flexible
                     <br />
                     <span className="font-normal text-sm">
                     Works on all devices

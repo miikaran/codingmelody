@@ -28,35 +28,37 @@ export default function MusicPlayer(){
 
     return(
 
-        <div className="flex justify-center sm:items-center py-36 sm:py-28 bg-mainpage bg-cover"> 
-            <div>
-                <div className="bg-black bg-opacity-30">
-                    {playList ? (     
-                        <div className="player sm:px-0 h-96">
+        <div className="bg-mainpage bg-cover">
+            <div className="flex justify-center sm:items-center py-36 sm:py-28 sm:h-screen"> 
+                <div>
+                    <div className="bg-black bg-opacity-30">
+                        {playList ? (     
+                            <div className="player sm:px-0 h-96">
+                                <ReactPlayer
+                                    wrapper='player'
+                                    loop = 'true'
+                                    url={url}
+                                    controls={controls}
+                                    playing={playing}
+                                    onEnded={(e) => setPlaying(false)}
+                                />
+                            </div>
+                        ): null}
+
+                        {choose && !playList ? (
+                            <div className="rounded-sm player sm:px-0 h-96">
                             <ReactPlayer
                                 wrapper='player'
                                 loop = 'true'
-                                url={url}
+                                url='https://www.youtube.com/watch?v=jfKfPfyJRdk'
                                 controls={controls}
-                                playing={playing}
-                                onEnded={(e) => setPlaying(false)}
                             />
-                        </div>
-                    ): null}
-
-                    {choose && !playList ? (
-                        <div className="rounded-sm player sm:px-0 h-96">
-                        <ReactPlayer
-                            wrapper='player'
-                            loop = 'true'
-                            url='https://www.youtube.com/watch?v=jfKfPfyJRdk'
-                            controls={controls}
-                        />
-                        </div>
-                    ): null}                                 
-                </div>                      
-                <PlayList url={PlayListMusic} choose={choosePlaylists}/> 
-            </div>    
+                            </div>
+                        ): null}                                 
+                    </div>                      
+                    <PlayList url={PlayListMusic} choose={choosePlaylists}/> 
+                </div>    
+            </div>
         </div>
 
     )
