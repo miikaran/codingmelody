@@ -1,5 +1,5 @@
 import React from 'react'
-import DemoImg2 from '../../../assets/Demoimg2.PNG'
+import DemoImg from '../../../assets/codingmelody1.PNG'
 import { Link } from 'react-router-dom';
 import { BsCodeSlash } from 'react-icons/bs'
 
@@ -7,23 +7,22 @@ import { BsCodeSlash } from 'react-icons/bs'
 export default function About(){
 
     return(
-        <section className="py-24 bg-white">
-            <div className="ml-4 sm:ml-20 md:ml-40 lg:ml-72 xl:flex">
-                <div className="text-gray-700 mt-20">
-                    <span className="text-4xl font-bold">What's CodingMelody All About?</span>
+        <section className="py-4 sm:py-16 bg-white">
+            <div className="flex mx-6 flex-col md:flex-row justify-center items-center">
+                <div className="text-gray-700 mt-14 sm:mt-10">
+                    <span className="text-4xl font-bold">What's CodingMelody?</span>
                     <div className="pt-4 w-20">
                         <hr className="border-2 border-gray-500" />
                     </div>
-                    <div className="text-lg mt-2 max-w-2xl">
+                    <div className="text-lg mt-2 max-w-lg lg:max-w-2xl">
                         <p>CodingMelody is a web application which you can use to listen to your
-                        favourite music from youtube without any ads interrupting it. It also works with videos,
-                        but its main focus is on songs. 
-                        You can use it on mobile & listen to music while your screen is off or you are browsing other applications.
+                        favourite music from YouTube without any ads interrupting it. You can also create your own
+                        playlists & enjoy them free of charge.
                         </p>
                     </div>
                     <div className="mt-5">
                         <span className="text-2xl font-bold">How It Works?</span>
-                        <div className="text-lg mt-2 max-w-2xl">
+                        <div className="text-lg mt-2 max-w-lg lg:max-w-2xl">
                             <p>When you're playing songs it embeds the song/video by the URL you gave to it when adding the song to your list.</p>
                         </div>
                     </div>
@@ -32,7 +31,7 @@ export default function About(){
                         <a href="https://github.com/miikaran/codingmelody" className="sm:text-2xl bg-indigo-500 mr-24 sm:mr-0 py-3 rounded-sm px-6 font-bold text-white hover:bg-indigo-600 transition duration-200 flex">SOURCE <BsCodeSlash className="ml-2 mt-1" /></a>          
                     </div>
                 </div>
-                <img className="hidden md:block sm:max-w-sm md:max-w-md xl:max-w-lg mt-20 md:mt-12 lg:mt-5 xl:ml-28 rounded-sm shadow-2xl shadow-indigo-800" src={DemoImg2} alt="Demo Image" />
+                <img className="hidden md:block sm:max-w-sm md:max-w-sm xl:max-w-md mt-20 md:mt-12 lg:mt-5 xl:ml-28 rounded-sm shadow-2xl shadow-indigo-800" src={DemoImg} alt="Demo Image" />
             </div>
         </section>
         

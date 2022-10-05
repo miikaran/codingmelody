@@ -255,7 +255,7 @@ export default function PlayList(props) {
                             <select onChange={(e) => filterPlaylist(e.target.value)} className="text-xl bg-[url('https://i1.wp.com/mynaijadj.com/wp-content/uploads/2021/03/music-playlist.jpg?fit=1200%2C627&ssl=1')] bg-cover sm:text-3xl rounded-md border-2 border-white border-opacity-30 text-white sm:px-14 py-6">
                                 <option className="bg-gray-900"></option>
                                 {playlists.map((data) => (             
-                                    <option className="bg-gray-900 font-light" value={data.PlaylistName}>{data.PlaylistName}</option>                     
+                                    <option key={data.PlaylistName} className="bg-gray-900 font-light" value={data.PlaylistName}>{data.PlaylistName}</option>                     
                                 ))}
                                 {playlists.length == 0 ?(
                                     <option className="bg-gray-900 font-light" value="Default">Default</option>
@@ -284,7 +284,7 @@ export default function PlayList(props) {
                         <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border border-white border-opacity-20 font-medium rounded-sm text-white px-2 py-1 bg-gray-900">
                             <option>Change Playlist</option>
                             {playlists.map((data) => (
-                                <option value={data.PlaylistName}>{data.PlaylistName}</option>
+                                <option key={data.PlaylistName} value={data.PlaylistName}>{data.PlaylistName}</option>
                             ))}
                         </select>
                         <p className="text-lg sm:text-xl font-bold">Current Playlist | <i className="font-medium">{playlistName}</i></p>
@@ -389,7 +389,7 @@ export default function PlayList(props) {
 
                     {noMatches ? (
                         <div>
-                            Nothing here
+                            <p>Nothing here</p>
                         </div>
                     ): null}
 
@@ -399,15 +399,17 @@ export default function PlayList(props) {
                         {search.length > 0 ? (
                                 searchedItems.map((item) => {
                                     return (
-                                        <div>
+                                        <div key={item.userId}>
                                             {item.PlaylistItem ? (
                                                 <div className="flex justify-between items-center bg-opacity-20 border border-white border-opacity-5 bg-gray-900 rounded-sms pr-5 backdrop-blur-xl">                              
-                                                    <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))} className="space-x-1 sm:space-x-4 flex items-center">                                          
+                                                    
+                                                    <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))} className="sm:space-x-4 flex items-center">                                          
                                                         <img className="w-12 sm:w-24" alt="Thumbnail" src={item.Thumbnail !== '' ? (item.Thumbnail): <p>y</p>} />                                                              
                                                         <div>
-                                                            <p className="sm:pl-3 md:pr-5 text-xs sm:text-lg">{item.name}</p>
+                                                            <p className="pl-2 sm:pl-6 md:pr-9 text-xs sm:text-lg">{item.name}</p>
                                                         </div>
                                                     </button>
+
                                                     <div className="space-x-4 text-3xl mt-3">
                                                         <button onClick={() => passSongUrlToParent((item.PlaylistItem), (item.name))}><IoIosPlay className="hover:text-gray-400 transition duration-200" /></button>
                                                         <button onClick={() => setMoreOptions(toggle => !toggle)}> {moreOptions ? (<AiOutlineClose className="hover:text-gray-300 transition duration-200" />):<BsThreeDotsVertical className="hover:text-gray-300 transition duration-200" /> }</button>
@@ -426,11 +428,11 @@ export default function PlayList(props) {
                                 items.map(data => {
 
                                     return (
-                                        <div>
+                                        <div key={data.userId}>
                                             {data.PlaylistItem ? (
                                                 <div className="flex justify-between items-center bg-opacity-20 border border-white border-opacity-5 bg-gray-900 pr-5 backdrop-blur-xl">               
 
-                                                    <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))} className="flex items-center">                                                                                    
+                                                    <button onClick={() => passSongUrlToParent((data.PlaylistItem), (data.name))} className="flex items-center sm:space-x-4">                                                                                    
                                                         <img className="w-12 sm:w-24" alt="Thumbnail" src={data.Thumbnail}/>                                                   
                                                         <div>
                                                             <p className="pl-2 sm:pl-6 md:pr-9 text-xs sm:text-lg">{data.name}</p>
@@ -442,7 +444,7 @@ export default function PlayList(props) {
                                                         <button onClick={() => setMoreOptions(toggle => !toggle)}> {moreOptions ? (<AiOutlineClose className="hover:text-gray-300 transition duration-200" />):<BsThreeDotsVertical className="hover:text-gray-300 transition duration-200" /> }</button>
                                                         
                                                         {moreOptions ? (
-                                                                <button onClick={() => deleteFromFireBase(data.userId)}><IoIosRemoveCircleOutline className="text-red-500 hover:text-red-700 transition duration-200" /></button>                                           
+                                                            <button onClick={() => deleteFromFireBase(data.userId)}><BsFillTrashFill className="text-red-500 hover:text-red-700 transition duration-200" /></button>                                                                                                  
                                                         ): null}
                                                         
                                                     </div>
