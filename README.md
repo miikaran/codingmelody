@@ -1,5 +1,5 @@
 <div align=center>
-  <a href="https://www.codingmelody.vercel.app">
+  <a href="https://codingmelody.vercel.app">
     <img src="https://user-images.githubusercontent.com/88707539/191809130-f50563d3-de02-40d0-be22-0347586a9c1e.svg"></img>
   </a>  
 </div>
@@ -15,7 +15,7 @@
 
 <div align=center> 
 
-# Live at <a href="https://www.codingmelody.vercel.app">Vercel 
+# Live at <a href="https://codingmelody.vercel.app">Vercel</a>
 
 </div>
 
