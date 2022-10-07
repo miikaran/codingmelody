@@ -26,8 +26,8 @@ CodingMelody is a web application which you can use to listen to your favourite 
 ## How It Works?
 It works just like any other music player, except you have the entirety of YouTube to get music from! So first you find a song from YouTube, copy the url, open CodingMelody, add songs & paste it there! When you create playlists, you can use them to filter different genres of music & switch from one to another easily.
 
-#### Demo Credentials:
-Email: test@gmail.com, <br>
+**Demo Credentials:** <br>
+Email: test@gmail.com <br>
 Password: yessir
 
 ## Tech used
