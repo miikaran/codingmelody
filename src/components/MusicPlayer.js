@@ -29,11 +29,11 @@ export default function MusicPlayer(){
     return(
 
         <div className="bg-mainpage bg-cover">
-            <div className="flex justify-center sm:items-center py-36 sm:py-28 sm:h-screen"> 
+            <div className="flex justify-center items-center py-52"> 
                 <div>
                     <div className="bg-black bg-opacity-30">
                         {playList ? (     
-                            <div className="player sm:px-0 h-96">
+                            <div className="player h-96">
                                 <ReactPlayer
                                     wrapper='player'
                                     loop = 'true'
@@ -46,7 +46,7 @@ export default function MusicPlayer(){
                         ): null}
 
                         {choose && !playList ? (
-                            <div className="rounded-sm player sm:px-0 h-96">
+                            <div className="player h-96">
                             <ReactPlayer
                                 wrapper='player'
                                 loop = 'true'

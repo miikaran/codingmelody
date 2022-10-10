@@ -244,7 +244,7 @@ export default function PlayList(props) {
         <div className="text-white bg-black bg-opacity-40">
 
             {!choosePlaylist ? (
-                <div className="flex flex-col justify-center pl-4 sm:pl-0 sm:items-center bg-black bg-opacity-90 fixed inset-0 z-50">
+                <div className="flex flex-col justify-center pl-4 sm:pl-0 sm:items-center bg-black bg-opacity-90 backdrop-blur-lg fixed inset-0 z-50">
                     <div className="max-w-3xl sm:p-14 rounded-sm">
                         <span className="sm:text-2xl"><span className="text-6xl font-bold">Hello!👋</span> <br />Start by choosing your playlist. Don't worry, you can change it later. And If you're new, just choose the Default option.</span>
                         <br /><br />
@@ -268,7 +268,7 @@ export default function PlayList(props) {
 
             {choosePlaylist ? (
             
-                <div className="space-y-6 px-0 sm:px-12 pt-6">
+                <div className="space-y-6 px-0 sm:px-12 pt-8">
 
                     <div className="flex flex-col sm:flex-row justify-center mx-2 sm:mx-0 space-x-0 space-y-6 sm:space-y-0 sm:space-x-3">
                         <button onClick={() => setAddingItem(true)}className="flex text-white bg-indigo-700 px-4 py-3 rounded-sm font-bold hover:bg-indigo-800 transition duration-200">
@@ -282,7 +282,7 @@ export default function PlayList(props) {
 
                     <div className="flex flex-col sm:flex-row sm:space-x-5 space-y-4 sm:space-y-0 mx-2 sm:mx-0">
                         <select onChange={(e) => filterPlaylist(e.target.value)} className="text-sm border border-white border-opacity-20 font-medium rounded-sm text-white px-2 py-1 bg-gray-900">
-                            <option>Change Playlist</option>
+                            <option value="">Change Playlist</option>
                             {playlists.map((data) => (
                                 <option key={data.PlaylistName} value={data.PlaylistName}>{data.PlaylistName}</option>
                             ))}
@@ -319,7 +319,7 @@ export default function PlayList(props) {
                                             <span className="text-xl sm:text-2xl font-bold">Add Items To Playlist</span>
                                             <p>Customizable options available.</p>
                                         </div>    
-                                        <img className="w-16 hidden sm:block" src={AddItems} />                   
+                                        <img alt="Adding Item" className="w-16 hidden sm:block" src={AddItems} />                   
                                     </div>
                                     <div className="flex flex-col space-y-2">
                                         <input onChange={handleNameInputChange} value={name} type="text" className="pl-3 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>        
@@ -353,7 +353,7 @@ export default function PlayList(props) {
                                         <span className="text-xl sm:text-2xl font-bold">Create New Playlists</span>
                                         <p>Filter Your Favourite Songs</p>
                                     </div>    
-                                    <img className="w-16 hidden sm:block" src={AddItems} />                   
+                                    <img alt="Adding Playlist"className="w-16 hidden sm:block" src={AddItems} />                   
                                 </div>                    
                                 <input onBlur={handlePlaylistNameInputChange} type="text" className="pl-3 pr-4 py-2 rounded-sm bg-gray-900 bg-opacity-80 border border-white border-opacity-30" placeholder="Enter Name Here.."/>                       
                                 <hr />
