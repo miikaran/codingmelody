@@ -52,17 +52,13 @@ Password: yessir
  #### 4. Create Firebase credentials and add them to .env file.
    ```js
    
-    TYPE,
+    API_KEY,
+    AUTH_DOMAIN,
+    DATABASE_URL,
     PROJECT_ID,
-    PRIVATE_KEY_ID,
-    PRIVATE_KEY,
-    CLIENT_EMAIL,
-    CLIENT_ID,
-    AUTH_URI,
-    TOKEN_URI,
-    AUTH_PROVIDER_X509_CERT_URL,
-    CLIENT_X509_CERT_URL,
-    FIREBASE_URL
+    STORAGE_BUCKET,
+    MESSAGING_SENDER_ID,
+    APP_ID,
    ```
    
  #### 5. Start the application.
