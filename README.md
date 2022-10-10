@@ -19,9 +19,8 @@
 
 </div>
 
-
 # What's CodingMelody?
-CodingMelody is a web application which you can use to listen to your favourite music from YouTube without any ads interrupting it. You can also create your own playlists & enjoy them free of charge. it's also mobile compatible, so it works even if your screen is off.
+CodingMelody is a web application which you can use to listen to your favourite music from YouTube without any ads interrupting it. You can also create your own playlists & enjoy them free of charge. It's mobile compatible, so it works even if your screen is off, or you're using other applications at the same time
 
 ## How It Works?
 It works just like any other music player, except you have the entirety of YouTube to get music from! So first you find a song from YouTube, copy the url, open CodingMelody, add songs & paste it there! When you create playlists, you can use them to filter different genres of music & switch from one to another easily.
