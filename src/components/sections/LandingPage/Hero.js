@@ -19,9 +19,9 @@ export default function Welcome(){
                         <Link to="/Signup" className="flex mt-3 text-lg sm:text-xl tracking-tighter bg-rose-400 px-5 sm:px-7 text-white font-bold py-3 rounded-sm hover:bg-rose-500 transition duration-200">
                             CREATE ACCOUNT <RiContactsFill className="mx-2 text-3xl" />
                         </Link>
-                        <Link to="/" className="flex mt-3 tracking-tighter text-lg sm:text-xl bg-indigo-400 rounded-sm px-7 text-white py-3 font-bold hover:bg-indigo-500 transition duration-200">
+                        <a href="https://drive.google.com/file/d/1GA1O1sjhS6nhi8gIHElrsT7x4ejdmoUT/view?usp=sharing" target="_blank" className="flex mt-3 tracking-tighter text-lg sm:text-xl bg-indigo-400 rounded-sm px-7 text-white py-3 font-bold hover:bg-indigo-500 transition duration-200">
                         DEMO <AiOutlinePlayCircle className="mx-2 text-3xl"/>
-                        </Link>
+                        </a>
                     </div>
                 </div>  
             </div>

@@ -46,12 +46,13 @@ export default function Login(){
     }
 
     return(
-        <div className="flex flex-col xl:flex-row justify-center items-center mt-16 sm:mt-32">
+        <div className="flex flex-col xl:flex-row justify-center items-center mt-16 sm:mt-20">
             <div className="bg-sky-200 bg-opacity-90 space-y-7 max-w-xs sm:max-w-lg px-7 sm:px-20 py-4 sm:py-20">
                 <img src={Logo} alt="logo" /> 
                 <div className="space-y-6 flex flex-col">
+                    <span className="text-sm"><b className="text-lg">Demo Credentials:</b> <br /> <b>email:</b> test@gmail.com <br /> <b>password:</b> yessir</span>
                     <input className="px-4 rounded-sm py-3" onChange={handleEmailChange} value={email} placeholder="Enter Email.." type="email" />
-                    <input className="px-4 rounded-sm py-3"  onChange={handlePasswordChange} value={password} placeholder="Enter Password" type="password" />
+                    <input className="px-4 rounded-sm py-3"  onChange={handlePasswordChange} value={password} placeholder="Enter Password.." type="password" />
                     <button onClick={handleSignIn} className="bg-indigo-500 p-2 px-12 sm:px-24 text-2xl rounded-sm text-white font-bold hover:bg-indigo-600 transition duration-200">LOG IN</button>   
                 </div>
                 

@@ -45,6 +45,7 @@ export default function Signup(){
                 <img src={Logo} />
                 <div className="space-y-10">
                     <div className="space-y-5 flex flex-col">
+                        <span className="text-sm"><b className="text-lg">Demo Credentials to login with:</b> <br /> <b>email:</b> test@gmail.com <br /> <b>password:</b> yessir</span>
                         <input className="py-3 px-4 rounded-sm" onChange={(e) => setUserCredentials({...userCredentials, email: e.target.value})} value={userCredentials.email} placeholder="Enter Your Email.." type="email" />                
                         <input className="py-3 px-4 rounded-sm" onChange={(e) => setUserCredentials({...userCredentials, password: e.target.value})} value={userCredentials.password} placeholder="Enter Your Password.." type="password" />
                         <input className="py-3 px-4 rounded-sm" onChange={(e) => setUserCredentials({...userCredentials, checkPassword: e.target.value})} value={userCredentials.checkPassword} placeholder="Confirm Your Password.." type="password" />
