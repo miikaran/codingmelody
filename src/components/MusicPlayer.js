@@ -5,12 +5,9 @@ import PlayList from './PlayList'
 
 export default function MusicPlayer(){
 
-    // REACT PLAYER PARAMETERS //
     const [playing, setPlaying] = useState(false);
     const [url, setUrl] = useState();
     const [controls, setControls] = useState(true);
-
-    // PLAYLIST MUSIC //
     const [playList, setPlayList] = useState(false);
     const [choose, setChoose] = useState(false);
 
